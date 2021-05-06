@@ -21,24 +21,6 @@ create table rooms
 
     foreign key (room_type_id) references room_types (room_type_id)
 );
-create table messages
-(
-    message_id         int primary key auto_increment,
-    sender_id          int       not null,
-    receiver_id        int       not null,
-    replied_message_id int     default null,
-
-    sent_date          timestamp not null,
-    content            text      not null,
-    room_id            int       not null,
-    is_read            boolean default false,
-    is_edited          boolean default false,
-
-    foreign key (receiver_id) references users (user_id),
-    foreign key (sender_id) references users (user_id),
-    foreign key (replied_message_id) references messages (message_id),
-    foreign key (room_id) references rooms (room_id)
-);
 
 create table roles
 (
@@ -54,11 +36,30 @@ create table room_members
 (
     member_id int primary key auto_increment,
 
-    user_id int not null ,
-    room_id int not null ,
-    role_id int not null,
+    user_id   int not null,
+    room_id   int not null,
+    role_id   int not null,
 
     foreign key (user_id) references users (user_id),
     foreign key (room_id) references rooms (room_id),
-    foreign key (role_id) references roles (role_id)
+    foreign key (role_id) references roles (role_id),
+    unique (user_id, room_id)
 );
+create table messages
+(
+    message_id         int primary key auto_increment,
+    member_id          int       not null,
+    sent_date          timestamp not null,
+
+    replied_message_id int     default null,
+    content            text      not null,
+
+    is_read            boolean default false,
+    is_edited          boolean default false,
+
+    foreign key (member_id) references room_members (member_id),
+    foreign key (replied_message_id) references messages (message_id),
+    unique (member_id, sent_date)
+);
+
+

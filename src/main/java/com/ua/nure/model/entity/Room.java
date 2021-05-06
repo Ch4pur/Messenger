@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class Room implements Serializable {
     private long id;
 
     @Column(name = "room_title",nullable = false)
+    @Size(min = 1, max = 40, message = "Title length must be from 1 to 40")
     private String title;
 
     @ManyToOne

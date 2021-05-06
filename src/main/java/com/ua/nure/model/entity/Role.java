@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Data
@@ -23,6 +24,7 @@ public class Role implements Serializable {
     private long id;
 
     @Column(name = "role_name", unique = true, nullable = false)
+    @Size(min = 1, max = 20, message = "Name length must be from 1 to 20")
     private String name;
 
     @Column(name = "can_write")
