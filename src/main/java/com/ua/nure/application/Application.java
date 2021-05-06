@@ -1,6 +1,7 @@
 package com.ua.nure.application;
 
 
+import com.ua.nure.model.entity.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
