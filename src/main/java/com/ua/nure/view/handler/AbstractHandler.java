@@ -102,9 +102,11 @@ public abstract class AbstractHandler implements Initializable {
 
     protected void addValidation(TextField textField, String validationRegex, String errorMessage) {
         textField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-            if (!(newValue && textField.getText().matches(validationRegex))) {
-                textField.setText("");
-                showError(errorMessage);
+            if (!newValue) {
+                if (!textField.getText().matches(validationRegex)) {
+                    textField.setText("");
+                    showError(errorMessage);
+                }
             }
         });
     }
