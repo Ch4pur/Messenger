@@ -1,5 +1,5 @@
 .main_pane {
-    -fx-pref-height: 475px;
+    -fx-pref-height: 525px;
     -fx-pref-width: 350px;
 }
 
@@ -12,18 +12,13 @@
     -fx-alignment: CENTER;
 }
 
-.input {
-    -fx-pref-height: 34px;
-    -fx-pref-width: 236px;
-}
+
 .submit {
     -fx-pref-height: 38px;
     -fx-pref-width: 236px;
 }
 
-.to_sign_up {
-    -fx-pref-height: 25px;
-    -fx-pref-width: 80px;
-    -fx-text-fill: #ffffff;
+.input {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 236px;
 }
-

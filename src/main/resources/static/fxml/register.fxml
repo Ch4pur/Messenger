@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="mainPane" onMouseClicked="#disableFocus" styleClass="rootPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ua.nure.view.handler.SignUpHandler">
+    <stylesheets>
+        <URL value="@../css/general.css" />
+        <URL value="@../css/sign_up.css" />
+    </stylesheets>
+
+    <AnchorPane fx:id="additionPane" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" styleClass="additionPane">
+        <Button fx:id="exitButton" layoutX="1058.0" layoutY="1.0" onMouseClicked="#exit" styleClass="button">
+            <graphic>
+                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../image/icon/close_window.png" />
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="minimizeButton" layoutX="1016.0" layoutY="1.0" mnemonicParsing="false" onMouseClicked="#minimizeWindow" styleClass="button">
+            <graphic>
+                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                    <Image url="@../image/icon/minimize-window.png" />
+                </ImageView>
+            </graphic>
+        </Button>
+    </AnchorPane>
+
+    <AnchorPane layoutX="375.0" layoutY="87.0" styleClass="panel, main_pane">
+        <Label layoutX="57.0" layoutY="43.0" styleClass="logo" text="Sign Up" AnchorPane.topAnchor="45.0" />
+        <AnchorPane fx:id="errorPane" layoutX="57.0" layoutY="162.0" styleClass="error_pane" AnchorPane.topAnchor="115.0">
+         <children>
+               <Label fx:id="errorLabel" styleClass="error_message" text="Text for test" wrapText="true" />
+         </children>
+        </AnchorPane>
+        <TextField fx:id="loginField" layoutX="57.0" layoutY="216.0" promptText="Login" styleClass="input" AnchorPane.topAnchor="185.0" />
+        <TextField fx:id="usernameField" layoutX="57.0" layoutY="263.0"  promptText="Username" styleClass="input" AnchorPane.topAnchor="235.0" />
+        <PasswordField fx:id="passwordField" layoutX="57.0" layoutY="308.0" promptText="Password" styleClass="input" AnchorPane.topAnchor="285.0" />
+        <Button fx:id="signUpButton" layoutX="57.0" layoutY="376.0" mnemonicParsing="false" onMouseClicked="#signUp" prefHeight="40.0" prefWidth="236.0" styleClass="button" text="Sign up" AnchorPane.topAnchor="350.0" />
+        <Button fx:id="toSignInButton" layoutX="211.0" layoutY="467.0" mnemonicParsing="false" onMouseClicked="#toSignIn" prefHeight="25.0" prefWidth="80.0" styleClass="button" text="Sign in" AnchorPane.bottomAnchor="35.0" />
+      <Label layoutX="57.0" layoutY="468.0" prefHeight="18.0" prefWidth="135.0" text="You have an account?" AnchorPane.bottomAnchor="39.200000000000045" />
+    </AnchorPane>
+</AnchorPane>

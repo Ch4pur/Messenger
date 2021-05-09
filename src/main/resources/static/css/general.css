@@ -1,16 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
 .panel {
     -fx-background-color: #ffffff;
     -fx-background-radius: 5px;
-    -fx-effect: dropshadow(three-pass-box, #ffffff, 5, 0, 0, 0);
+    /*-fx-effect: dropshadow(three-pass-box, #ffffff, 5, 0, 0, 0);*/
+    -fx-border-color: #000000;
+    -fx-border-width: 0.5px;
+    -fx-border-radius: 5px;
 }
 
 .button {
     -fx-background-color: #C477D3FF;
     -fx-background-radius: 5px;
-    -fx-font-family: 'Roboto', sans-serif;
     -fx-cursor: Hand;
+    -fx-text-fill: #ffffff;
+    -fx-text-alignment: Center;
+    -fx-text-overrun: CENTER_WORD_ELLIPSIS;
+    -fx-font-family: 'Noto Sans', sans-serif;
+    -fx-border-color: #000000;
+    -fx-border-width: 0.5px;
+    -fx-border-radius: 5px;
 }
 
 .rootPane {
@@ -25,13 +35,23 @@
     -fx-background-color: white;
 }
 
-* {
-    -fx-font-family: 'Noto Sans JP';
-}
-
 .additionPane .button {
     -fx-pref-height: 25px;
     -fx-pref-width: 25px;
     -fx-background-color: white;
     -fx-background-radius: 0px;
+    -fx-border-width: 0px;
+}
+
+.error_pane {
+    -fx-pref-height: 53px;
+    -fx-pref-width: 236px;
+}
+
+.error_pane .error_message {
+    -fx-alignment: top_left;
+    -fx-pref-height: 40px;
+    -fx-pref-width: 230px;
+    -fx-text-fill: #d14848;
+    -fx-font-size: 12px;
 }
