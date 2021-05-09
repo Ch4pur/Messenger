@@ -36,14 +36,15 @@ public class MessageServiceImpl implements MessageService {
         if (!(memberRepository.existsById(memberId))) {
             //TODO custom exception
         }
-        Role role = roleRepository.getRoleByMemberId(memberId);
-        if (!role.isCanWrite()) {
-            //TODO custom exception
-        }
         Message repliedMessage = message.getRepliedMessage();
         if (repliedMessage != null && messageRepository.existsById(repliedMessage.getId())) {
             //TODO custom exception
         }
+        Role role = roleRepository.getRoleByMemberId(memberId);
+        if (!role.isCanWrite()) {
+            //TODO custom exception
+        }
+
         if (messageRepository.existsById(message.getId())) {
             //TODO custom exception
         }

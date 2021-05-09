@@ -3,6 +3,7 @@ package com.ua.nure.server;
 import lombok.AllArgsConstructor;
 import lombok.Cleanup;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -12,6 +13,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+@Component
 public class MessengerServer {
 
     @Setter

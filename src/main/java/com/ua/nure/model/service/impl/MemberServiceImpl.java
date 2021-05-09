@@ -8,10 +8,12 @@ import com.ua.nure.model.repository.RoomRepository;
 import com.ua.nure.model.repository.UserRepository;
 import com.ua.nure.model.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@Service
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
