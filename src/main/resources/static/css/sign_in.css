@@ -1,0 +1,9 @@
+.submit {
+    -fx-pref-height: 38px;
+    -fx-pref-width: 236px;
+}
+
+.input {
+    -fx-pref-height: 34px;
+    -fx-pref-width: 236px;
+}
