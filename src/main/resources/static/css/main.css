@@ -1,0 +1,115 @@
+.rooms_pane {
+    -fx-pref-height: 665px;
+    -fx-pref-width: 300px;
+}
+
+.rooms_pane .search_room_pane {
+    -fx-pref-height: 35px;
+    -fx-pref-width: 300px;
+}
+
+.rooms_pane .search_room_pane .search_room {
+    -fx-pref-height: 26px;
+    -fx-pref-width: 263px;
+}
+
+.rooms_pane .rooms_scroll {
+    -fx-pref-height: 630px;
+    -fx-pref-width: 300px;
+}
+
+.rooms_pane .rooms_scroll .rooms {
+    -fx-min-height: 0;
+    -fx-min-width: 0px;
+    -fx-pref-height: 634px;
+    -fx-pref-width: 286px;
+}
+
+.rooms_pane .rooms_scroll .rooms .room {
+    -fx-pref-height: 50px;
+    -fx-pref-width: 290px;
+    -fx-cursor: hand;
+}
+
+.rooms_pane .rooms_scroll .rooms .selected {
+    -fx-background-color: #81EFEC;
+    -fx-border-color: #4BD6D2;
+}
+
+.rooms_pane .rooms_scroll .room .title {
+    -fx-text-fill: #c477d3;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.rooms_pane .rooms_scroll .room .content {
+    -fx-pref-height: 18px;
+    -fx-pref-width: 194px;
+}
+
+.rooms_pane .rooms_scroll .room .new_messages {
+    -fx-pref-height: 25px;
+    -fx-pref-width: 25px;
+    -fx-background-color: white;
+    -fx-border-color: c477d3;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+}
+.rooms_pane .rooms_scroll .room .new_messages .counter {
+ -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+.tool_pane {
+    -fx-background-color: #EEFEFF;
+}
+
+.title_pane {
+    -fx-pref-height: 35px;
+    -fx-pref-width: 800px;
+}
+
+.title_pane .title {
+    -fx-content-display: CENTER;
+    -fx-pref-height: 30px;
+    -fx-pref-width: 431px;
+    -fx-text-fill: #9557a1;
+    -fx-font-size: 20px;
+}
+
+.title_pane .search {
+    -fx-cursor: HAND;
+}
+
+.messages_pane {
+
+}
+
+.message {
+
+}
+
+.message .your {
+
+}
+
+.message .others {
+
+}
+
+.message .replied {
+
+}
+
+.writing_pane {
+    -fx-pref-height: 38px;
+    -fx-pref-width: 800px;
+}
+
+.writing_pane .writing_field {
+    -fx-pref-height: 25px;
+    -fx-pref-width: 705px;
+}
+
+.writing_pane .send_message {
+    -fx-cursor: HAND;
+}
