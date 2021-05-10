@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public abstract class AbstractHandler implements Initializable {
+public abstract class Handler implements Initializable {
 
     private double xOffset;
     private double yOffset;

@@ -4,7 +4,6 @@
 .panel {
     -fx-background-color: #ffffff;
     -fx-background-radius: 5px;
-    /*-fx-effect: dropshadow(three-pass-box, #ffffff, 5, 0, 0, 0);*/
     -fx-border-color: #000000;
     -fx-border-width: 0.5px;
     -fx-border-radius: 5px;

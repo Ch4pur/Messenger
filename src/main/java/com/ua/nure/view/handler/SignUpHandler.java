@@ -14,7 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 @Component
-public class SignUpHandler extends AbstractHandler {
+public class SignUpHandler extends Handler {
 
     @FXML
     protected TextField loginField;
