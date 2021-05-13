@@ -1,9 +1,9 @@
 package com.ua.nure.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,17 +20,32 @@ public class Member implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
+    @JsonProperty
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    @JsonProperty
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "room_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "room_id")
+    @JsonBackReference
     private Room room;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @Column(name = "can_write")
+    @JsonProperty
+    private boolean canWrite;
+
+    @Column(name = "can_invite")
+    @JsonProperty
+    private boolean canInvite;
+
+    @Column(name = "can_edit")
+    @JsonProperty
+    private boolean canEdit;
+
+    @Column(name = "can_remove")
+    @JsonProperty
+    private boolean canRemove;
 }

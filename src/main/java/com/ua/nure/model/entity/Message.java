@@ -1,5 +1,6 @@
 package com.ua.nure.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,34 +19,41 @@ import java.sql.Timestamp;
 @javax.persistence.Entity
 @Table(
         name = "messages",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"room_id", "sender_id", "sent_date"})
+        uniqueConstraints = @UniqueConstraint(columnNames = {"member_id", "sent_date"})
 )
-public class Message implements Serializable {
+public class Message {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "message_id")
+    @JsonProperty
     private long id;
 
-    @ManyToOne()
-    @JoinColumn(name = "member_id", nullable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "member_id")
+    @JsonProperty
     private Member member;
 
-    @OneToOne()
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "replied_message_id")
+    @JsonProperty
     private Message repliedMessage;
 
     @Column(name = "content")
     @NotEmpty
+    @JsonProperty
     private String content;
 
     @Column(name = "sent_date")
+    @JsonProperty
     private Timestamp date;
 
     @Column(name = "is_read")
+    @JsonProperty
     private boolean isChecked;
 
     @Column(name = "is_edited")
+    @JsonProperty
     private boolean isEdited;
 
 }

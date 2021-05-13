@@ -6,43 +6,26 @@ create table users
     password varchar(30)        not null
 );
 
-create table room_types
-(
-    room_type_id         int primary key auto_increment,
-    room_type_name       varchar(25) unique                     not null,
-    max_number_of_people int check ( max_number_of_people > 0 ) not null
-);
-
 create table rooms
 (
     room_id      int primary key auto_increment,
     room_title   varchar(40) not null,
-    room_type_id int         not null,
-
-    foreign key (room_type_id) references room_types (room_type_id)
+    max_number_of_people int check ( max_number_of_people > 0 ) not null
 );
-
-create table roles
-(
-    role_id    int primary key auto_increment,
-    role_name  varchar(20) unique not null,
-    can_write  boolean default false,
-    can_invite boolean default false,
-    can_edit   boolean default false,
-    can_remove boolean default false
-);
-
 create table room_members
 (
     member_id int primary key auto_increment,
 
     user_id   int not null,
     room_id   int not null,
-    role_id   int not null,
+
+    can_write  boolean default false,
+    can_invite boolean default false,
+    can_edit   boolean default false,
+    can_remove boolean default false,
 
     foreign key (user_id) references users (user_id),
     foreign key (room_id) references rooms (room_id),
-    foreign key (role_id) references roles (role_id),
     unique (user_id, room_id)
 );
 create table messages
