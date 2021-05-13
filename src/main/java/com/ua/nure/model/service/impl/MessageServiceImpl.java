@@ -1,7 +1,7 @@
 package com.ua.nure.model.service.impl;
 
+import com.ua.nure.exception.ServiceException;
 import com.ua.nure.model.entity.Message;
-import com.ua.nure.model.entity.Role;
 import com.ua.nure.model.repository.*;
 import com.ua.nure.model.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,94 +14,88 @@ import java.util.List;
 public class MessageServiceImpl implements MessageService {
 
     private final MessageRepository messageRepository;
-    private final UserRepository userRepository;
     private final MemberRepository memberRepository;
     private final RoomRepository roomRepository;
-    private final RoleRepository roleRepository;
 
     @Autowired
-    public MessageServiceImpl(MessageRepository messageRepository, UserRepository userRepository,
-                              MemberRepository memberRepository, RoomRepository roomRepository,
-                              RoleRepository roleRepository) {
+    public MessageServiceImpl(MessageRepository messageRepository,
+                              MemberRepository memberRepository,
+                              RoomRepository roomRepository) {
         this.messageRepository = messageRepository;
-        this.userRepository = userRepository;
         this.memberRepository = memberRepository;
         this.roomRepository = roomRepository;
-        this.roleRepository = roleRepository;
+
     }
 
     @Override
-    public void sentMessage(@NotNull Message message) {
+    public void sendMessage(@NotNull Message message) throws ServiceException {
         long memberId = message.getMember().getId();
         if (!(memberRepository.existsById(memberId))) {
-            //TODO custom exception
+            throw new ServiceException("Specified member doesn't exist");
         }
         Message repliedMessage = message.getRepliedMessage();
         if (repliedMessage != null && messageRepository.existsById(repliedMessage.getId())) {
-            //TODO custom exception
+            throw new ServiceException("Specified replied message doesn't exist");
         }
-        Role role = roleRepository.getRoleByMemberId(memberId);
-        if (!role.isCanWrite()) {
-            //TODO custom exception
+        if (!message.getMember().isCanWrite()) {
+            throw new ServiceException("Specified role doesn't exist");
         }
 
         if (messageRepository.existsById(message.getId())) {
-            //TODO custom exception
+            throw new ServiceException("Specified message already exists");
         }
         messageRepository.save(message);
     }
 
     @Override
-    public void removeMessageById(long id) {
+    public void removeMessageById(long id) throws ServiceException {
         if (!messageRepository.existsById(id)) {
-            //TODO custom exception
+            throw new ServiceException("Specified message doesn't exist");
         }
         Message message = messageRepository.getOne(id);
-        Role role = message.getMember().getRole();
-        if (!role.isCanRemove()) {
-            //TODO custom exception
+        if (!message.getMember().isCanRemove()) {
+            throw new ServiceException("You dont have sufficient rights to remove message");
         }
         messageRepository.deleteById(id);
     }
 
     @Override
-    public void editMessageById(long id, @NotNull String newContent) {
-        if (messageRepository.existsById(id)) {
-            //TODO custom exception
+    public void editMessageById(long id, @NotNull String newContent) throws ServiceException {
+        if (!messageRepository.existsById(id)) {
+            throw new ServiceException("Specified message doesn't exist");
         }
         if (newContent.isBlank()) {
-            //TODO custom exception
+            throw new ServiceException("Content can not be blanc");
         }
         Message message = messageRepository.getOne(id);
-        Role role = message.getMember().getRole();
-        if (!role.isCanEdit()) {
-            //TODO custom exception
+        if (!message.getMember().isCanEdit()) {
+            throw new ServiceException("You dont have sufficient rights to edit message");
         }
         messageRepository.editMessage(id, newContent);
     }
 
     @Override
-    public List<Message> getMessagesBySenderId(long id) {
-        if (!userRepository.existsById(id)) {
-            //TODO custom exception
+    public List<Message> getMessagesByRoomId(long id) throws ServiceException {
+        if (!roomRepository.existsById(id)) {
+            throw new ServiceException("Nonexistent room");
         }
-
-        return messageRepository.getMessagesBySenderId(id);
+        return messageRepository.getMessagesByRoomId(id);
     }
 
+
     @Override
-    public List<Message> getMessagesByMemberId(long id) {
+    public List<Message> getMessagesByMemberId(long id) throws ServiceException {
         if (!memberRepository.existsById(id)) {
-            //TODO custom exception
+            throw new ServiceException("Specified member doesn't exist");
         }
 
         return messageRepository.getMessagesByMemberId(id);
     }
 
     @Override
-    public List<Message> getMessagesByContentPartAndRoomId(@NotNull String content, long roomId) {
+    public List<Message> getMessagesByContentPartAndRoomId(@NotNull String content, long roomId) throws ServiceException {
         if (!roomRepository.existsById(roomId)) {
-            //TODO custom exception
+            throw new ServiceException("Specified room doesn't exist");
         }
         return messageRepository.getMessagesByContentPartAndRoomId(content, roomId);
     }

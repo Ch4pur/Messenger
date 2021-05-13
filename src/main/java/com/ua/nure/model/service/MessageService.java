@@ -1,19 +1,20 @@
 package com.ua.nure.model.service;
 
+import com.ua.nure.exception.ServiceException;
 import com.ua.nure.model.entity.Message;
 
 import java.util.List;
 
 public interface MessageService {
-    void sentMessage(Message message);
+    void sendMessage(Message message) throws ServiceException;
 
-    void removeMessageById(long id);
+    void removeMessageById(long id) throws ServiceException;
 
-    void editMessageById(long id,String newContent);
+    void editMessageById(long id,String newContent) throws ServiceException;
 
-    List<Message> getMessagesBySenderId(long id);
+    List<Message> getMessagesByRoomId(long id) throws ServiceException;
 
-    List<Message> getMessagesByMemberId(long id);
+    List<Message> getMessagesByMemberId(long id) throws ServiceException;
 
-    List<Message> getMessagesByContentPartAndRoomId(String content, long roomId);
+    List<Message> getMessagesByContentPartAndRoomId(String content, long roomId) throws ServiceException;
 }

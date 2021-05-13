@@ -1,5 +1,6 @@
 package com.ua.nure.model.service;
 
+import com.ua.nure.exception.ServiceException;
 import com.ua.nure.model.entity.User;
 
 public interface UserService {
@@ -7,9 +8,11 @@ public interface UserService {
 
     User getUserByLogin(String login);
 
-    void addUser(User user);
+    User signInUser(String login, String password) throws ServiceException;
 
-    void updateUser(User user);
+    void addUser(User user) throws ServiceException;
+
+    void updateUser(User user) throws ServiceException;
 
     void removeUserById(long id);
 }

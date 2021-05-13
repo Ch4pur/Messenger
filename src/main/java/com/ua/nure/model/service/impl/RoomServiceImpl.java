@@ -1,64 +1,73 @@
 package com.ua.nure.model.service.impl;
 
+import com.ua.nure.exception.ServiceException;
 import com.ua.nure.model.entity.Room;
+import com.ua.nure.model.entity.User;
 import com.ua.nure.model.repository.RoomRepository;
-import com.ua.nure.model.repository.RoomTypeRepository;
 import com.ua.nure.model.repository.UserRepository;
 import com.ua.nure.model.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Service
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
     private final UserRepository userRepository;
-    private final RoomTypeRepository roomTypeRepository;
 
     @Autowired
-    public RoomServiceImpl(RoomRepository roomService,
-                           UserRepository userRepository,
-                           RoomTypeRepository roomTypeRepository) {
+    public RoomServiceImpl(RoomRepository roomService, UserRepository userRepository) {
         this.roomRepository = roomService;
         this.userRepository = userRepository;
-        this.roomTypeRepository = roomTypeRepository;
     }
 
     @Override
-    public void createRoom(@NotNull Room room) {
-        if (!roomTypeRepository.existsById(room.getRoomType().getId())) {
-            //TODO custom exception
-        }
+    public void createRoom(@NotNull Room room) throws ServiceException {
         if (roomRepository.existsById(room.getId())) {
-            //TODO custom exception
+            throw new ServiceException("The specified room already exists");
         }
+        roomRepository.save(room);
+    }
+
+    @Override
+    public void createDialog(long firstUserId, long secondUserId) throws ServiceException {
+        if (!(userRepository.existsById(firstUserId) && userRepository.existsById(secondUserId))) {
+            throw new ServiceException("Some of the users don't exist");
+        }
+        User firstUser = userRepository.getOne(firstUserId);
+        User secondUser = userRepository.getOne(secondUserId);
+
+        Room room = new Room(-1,"Dialog",List.of(firstUser,secondUser),2);
         roomRepository.save(room);
     }
 
     @Override
     public void removeRoomById(long id) {
-        if (!roomRepository.existsById(id)) {
-            //TODO custom exception
-        }
         roomRepository.deleteById(id);
     }
 
     @Override
-    public void updateRoom(@NotNull Room room) {
+    public void updateRoom(@NotNull Room room) throws ServiceException {
         if (roomRepository.existsById(room.getId())) {
-            //TODO custom exception
+            throw new ServiceException("The specified room doesn`t exist");
         }
         roomRepository.save(room);
     }
 
+    @Override
+    public Room getRoomById(long id) {
+        return roomRepository.getOne(id);
+    }
+
 
     @Override
-    public void getRoomsByUserId(long id) {
+    public List<Room> getRoomsByUserId(long id) throws ServiceException {
         if (!userRepository.existsById(id)) {
-            //TODO custom exception
+            throw new ServiceException("The specified user doesn`t exist");
         }
-        roomRepository.getRoomsByUserId(id);
+        return roomRepository.getRoomsByUserId(id);
     }
 }

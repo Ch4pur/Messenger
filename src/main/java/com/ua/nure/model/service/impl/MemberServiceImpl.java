@@ -1,9 +1,9 @@
 package com.ua.nure.model.service.impl;
 
+import com.ua.nure.exception.ServiceException;
 import com.ua.nure.model.entity.Member;
-import com.ua.nure.model.entity.RoomType;
+import com.ua.nure.model.entity.Room;
 import com.ua.nure.model.repository.MemberRepository;
-import com.ua.nure.model.repository.RoleRepository;
 import com.ua.nure.model.repository.RoomRepository;
 import com.ua.nure.model.repository.UserRepository;
 import com.ua.nure.model.service.MemberService;
@@ -19,70 +19,67 @@ public class MemberServiceImpl implements MemberService {
     private final MemberRepository memberRepository;
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
-    private final RoleRepository roleRepository;
 
     @Autowired
     public MemberServiceImpl(MemberRepository memberRepository, UserRepository userRepository,
-                             RoomRepository roomRepository, RoleRepository roleRepository) {
+                             RoomRepository roomRepository) {
         this.memberRepository = memberRepository;
         this.userRepository = userRepository;
         this.roomRepository = roomRepository;
-        this.roleRepository = roleRepository;
     }
 
     @Override
-    public void addMember(@NotNull Member member) {
-        if (!(roleRepository.isRoleExist(member.getRole())
-                && userRepository.existsById(member.getUser().getId())
-                && roomRepository.existsById(member.getRoom().getId()))) {
-            //TODO custom exception
+    public void addMember(@NotNull Member member) throws ServiceException {
+        if (!userRepository.existsById(member.getUser().getId())) {
+            throw new ServiceException("Specified user doesn`t exist");
+        }
+        if (!roomRepository.existsById(member.getRoom().getId())) {
+            throw new ServiceException("Specified room doesn`t exist");
         }
         if (memberRepository.existsById(member.getId())) {
-            //TODO custom exception
+            throw new ServiceException("Specified member already exist");
         }
 
-        RoomType roomType = member.getRoom().getRoomType();
-        long roomId = member.getRoom().getId();
-
-        int maxCountOfRoomMembers = roomType.getMaxQuantityOfMembers();
-        int countOfRoomMembers = roomRepository.getCountOfRoomMembers(roomId);
+        Room room = member.getRoom();
+        int maxCountOfRoomMembers = room.getMaxQuantityOfMembers();
+        int countOfRoomMembers = roomRepository.getCountOfRoomMembers(room.getId());
         if (maxCountOfRoomMembers < countOfRoomMembers + 1) {
-            //TODO custom exception
+            throw new ServiceException("Room is full");
         }
 
         memberRepository.save(member);
     }
 
     @Override
-    public void updateMembersRole(long roleId, long memberId) {
-        if (!(roomRepository.existsById(roleId) && memberRepository.existsById(memberId))) {
-            //TODO custom exception
+    public void updateMemberRestrictions(Member member) throws ServiceException {
+        if (!memberRepository.existsById(member.getId())) {
+            throw new ServiceException("Specified member doesn't exist");
         }
-        memberRepository.setRoleToMember(roleId, memberId);
+        memberRepository.save(member);
     }
+
 
     @Override
     public void removeMemberById(long memberId) {
-        if (memberRepository.existsById(memberId)) {
-            //TODO custom exception
-        }
         memberRepository.deleteById(memberId);
     }
 
     @Override
-    public List<Member> getMemberByRoomId(long roomId) {
+    public Member getMemberByRoomIdAndUserId(long roomId, long userId) throws ServiceException {
         if (!roomRepository.existsById(roomId)) {
-            //TODO custom exception
+            throw new ServiceException("Specified room doesn't exist");
         }
-        return memberRepository.findMembersByRoomId(roomId);
+        if (!userRepository.existsById(userId)) {
+            throw new ServiceException("Specified user doesn't exist");
+        }
+        return memberRepository.getMemberByRoomIdAndUserId(roomId, userId);
     }
 
     @Override
-    public List<Member> getMembersByRoomIdAndRoleId(long roomId, long roleId) {
-        if (!(roomRepository.existsById(roomId) && roleRepository.existsById(roleId))) {
-            //TODO custom exception
+    public List<Member> getMembersByRoomId(long roomId) throws ServiceException {
+        if (!roomRepository.existsById(roomId)) {
+            throw new ServiceException("Specified room doesn't exist");
         }
-
-        return memberRepository.getMembersByRoomIdAndRoleId(roomId, roleId);
+        return memberRepository.findMembersByRoomId(roomId);
     }
 }
