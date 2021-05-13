@@ -12,10 +12,10 @@ import java.util.List;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-    @Query("select r from Room r,User u inner join Member m on (u = m.room) where m.user.id = :user_id")
+    @Query("select r from Room r inner join Member m on (r = m.room) where m.user.id = :user_id")
     List<Room> getRoomsByUserId(@Param("user_id") long userId);
 
-    @Query("select r from Room r,User u inner join Member m on (u = m.user) where m.user = :user")
+    @Query("select r from Room r inner join Member m on (r = m.room) where m.user = :user")
     List<Room> getRoomsByUser(@Param("user") User user);
 
     @Query("select count(m) from Member m where m.room.id = :room_id")

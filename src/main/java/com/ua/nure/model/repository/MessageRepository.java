@@ -13,14 +13,14 @@ import java.util.List;
 @Repository
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-    @Query("from Message where member.user.id = :sender_id")
-    List<Message> getMessagesBySenderId(@Param("sender_id") long id);
+    @Query("from Message m where m.member.room.id = :room_id order by m.date")
+    List<Message> getMessagesByRoomId(@Param("room_id") long id);
 
-    @Query("from Message where member.id = id")
+    @Query("from Message m where m.member.id = :member_id")
     List<Message> getMessagesByMemberId(@Param("member_id") long id);
 
-    @Query("from Message where member.user.id = :room_id and member.room.id = :room_id " +
-            "and content like concat('%',:content, '%')")
+    @Query("from Message m ,User u where m.member.user.id = :room_id and m.member.room.id = :room_id " +
+            "and m.content like concat('%',:content, '%')")
     List<Message> getMessagesByContentPartAndRoomId(@Param("content") String content, @Param("room_id") long id);
 
     @Modifying
