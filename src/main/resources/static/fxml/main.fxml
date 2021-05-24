@@ -14,7 +14,7 @@
 
 <AnchorPane fx:id="mainPane" onMouseClicked="#disableFocus" prefHeight="700.0" prefWidth="1100.0" styleClass="rootPane"
             xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.ua.nure.view.handler.MainPageHandler">
+            fx:controller="com.ua.nure.client.controller.MainPageController">
     <stylesheets>
         <URL value="@../css/general.css"/>
         <URL value="@../css/main.css"/>

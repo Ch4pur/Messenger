@@ -1,13 +1,13 @@
 package com.ua.nure.server.command;
 
-import com.ua.nure.exception.CommandException;
-import com.ua.nure.exception.ServiceException;
-import com.ua.nure.model.entity.Member;
-import com.ua.nure.model.entity.Message;
-import com.ua.nure.model.entity.User;
-import com.ua.nure.model.service.MemberService;
-import com.ua.nure.model.service.MessageService;
-import com.ua.nure.server.ResponsePackage;
+import com.ua.nure.server.exception.CommandException;
+import com.ua.nure.server.exception.ServiceException;
+import com.ua.nure.server.model.entity.Member;
+import com.ua.nure.server.model.entity.Message;
+import com.ua.nure.server.model.entity.User;
+import com.ua.nure.server.model.service.MemberService;
+import com.ua.nure.server.model.service.MessageService;
+import com.ua.nure.data.ResponsePackage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +46,6 @@ public class SendMessageCommand implements Command {
 
             ResponsePackage responsePackage = new ResponsePackage();
             List<Member> memberList = memberService.getMembersByRoomId(roomId);
-            System.out.println(memberList);
             for (Member roomMember : memberList) {
                 User roomUser = roomMember.getUser();
                 responsePackage.addReceiverId(roomUser.getId());
