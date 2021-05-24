@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane fx:id="mainPane" onMouseClicked="#disableFocus" styleClass="rootPane" xmlns="http://javafx.com/javafx/16"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ua.nure.view.handler.SignUpHandler">
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ua.nure.client.controller.SignUpController">
     <stylesheets>
         <URL value="@../css/general.css"/>
         <URL value="@../css/sign_up.css"/>
