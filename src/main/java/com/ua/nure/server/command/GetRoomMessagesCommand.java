@@ -1,11 +1,11 @@
 package com.ua.nure.server.command;
 
-import com.ua.nure.exception.CommandException;
-import com.ua.nure.exception.ServiceException;
-import com.ua.nure.model.entity.Message;
-import com.ua.nure.model.service.MessageService;
-import com.ua.nure.model.service.RoomService;
-import com.ua.nure.server.ResponsePackage;
+import com.ua.nure.server.exception.CommandException;
+import com.ua.nure.server.exception.ServiceException;
+import com.ua.nure.server.model.entity.Message;
+import com.ua.nure.server.model.service.MessageService;
+import com.ua.nure.server.model.service.RoomService;
+import com.ua.nure.data.ResponsePackage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -1,16 +1,17 @@
 package com.ua.nure.server.command;
 
-import com.ua.nure.exception.CommandException;
-import com.ua.nure.exception.ServiceException;
-import com.ua.nure.model.entity.User;
-import com.ua.nure.model.service.UserService;
-import com.ua.nure.server.ResponsePackage;
+import com.ua.nure.server.exception.CommandException;
+import com.ua.nure.server.exception.ServiceException;
+import com.ua.nure.server.model.entity.User;
+import com.ua.nure.server.model.service.UserService;
+import com.ua.nure.data.ResponsePackage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+
 @Component
-public class SignUpCommand implements Command{
+public class SignUpCommand implements Command {
 
     private final UserService userService;
 
@@ -25,10 +26,9 @@ public class SignUpCommand implements Command{
         String password = (String) attributes.get("password");
         String username = (String) attributes.get("username");
 
-        User user = new User(login,username,password);
+        User user = new User(login, username, password);
         try {
-            userService.addUser(user);
-            user = userService.getUserByLogin(login);
+            user = userService.signUpUser(user);
         } catch (ServiceException e) {
             throw new CommandException(e.getMessage());
         }

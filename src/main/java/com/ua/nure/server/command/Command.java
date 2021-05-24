@@ -1,7 +1,7 @@
 package com.ua.nure.server.command;
 
-import com.ua.nure.exception.CommandException;
-import com.ua.nure.server.ResponsePackage;
+import com.ua.nure.server.exception.CommandException;
+import com.ua.nure.data.ResponsePackage;
 
 import java.util.Map;
 
