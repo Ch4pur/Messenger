@@ -1,9 +1,13 @@
 package com.ua.nure.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ua.nure.exception.CommandException;
-import com.ua.nure.model.entity.User;
+import com.ua.nure.data.RequestPackage;
+import com.ua.nure.data.ResponsePackage;
+import com.ua.nure.server.exception.CommandException;
+import com.ua.nure.server.model.entity.User;
 import com.ua.nure.server.command.Command;
+import com.ua.nure.util.ConnectionConstants;
+import com.ua.nure.util.Namings;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +36,15 @@ public class MessengerServer {
     private final Map<String, Command> commands;
     private final List<ClientListener> clients;
     private final ObjectMapper jsonFormatter;
+    private final int maxQuantityOfClients;
 
     @Autowired
     public MessengerServer(ConfigurableApplicationContext context) {
-        port = (int) context.getBean("port");
-        commands = (Map<String, Command>) context.getBean("serverCommands");
+        commands = (Map<String, Command>) context.getBean(Namings.SERVER_COMMANDS);
         clients = new ArrayList<>();
         jsonFormatter = new ObjectMapper();
+        port = ConnectionConstants.PORT;
+        maxQuantityOfClients = ConnectionConstants.MAX_NUMBER_OF_CLIENTS;
     }
 
     public class ClientListener implements Closeable {
@@ -66,7 +72,6 @@ public class MessengerServer {
                             throw new CommandException("There are no such command");
                         }
                         response = command.execute(session, request.getAttributes());
-
                     } catch (IOException e) {
                         response.setExceptionMessage("505! Error from server");
                     } catch (CommandException e) {
@@ -104,6 +109,17 @@ public class MessengerServer {
                     close();
                 }
             }
+
+            private List<DataOutputStream> getOutputStreamsByUserId(long id) {
+                List<DataOutputStream> streams = new ArrayList<>();
+                for (ClientListener client : clients) {
+                    User user = (User) client.getSession().get("user");
+                    if (user != null && user.getId() == id) {
+                        streams.add(client.getWriter());
+                    }
+                }
+                return streams;
+            }
         }
 
         public ClientListener(Socket socket) throws IOException {
@@ -133,7 +149,11 @@ public class MessengerServer {
     private void runServer() throws IOException {
         while (!serverSocket.isClosed()) {
             Socket clientSocket = serverSocket.accept();
-            clients.add(new ClientListener(clientSocket));
+            if (clients.size() == maxQuantityOfClients) {
+                clientSocket.close();
+            } else {
+                clients.add(new ClientListener(clientSocket));
+            }
         }
     }
 
@@ -145,14 +165,5 @@ public class MessengerServer {
         runServer();
     }
 
-    private List<DataOutputStream> getOutputStreamsByUserId(long id) {
-        List<DataOutputStream> streams = new ArrayList<>();
-        for (ClientListener client : clients) {
-            User user = (User) client.getSession().get("user");
-            if (user != null && user.getId() == id) {
-                streams.add(client.getWriter());
-            }
-        }
-        return streams;
-    }
+
 }
