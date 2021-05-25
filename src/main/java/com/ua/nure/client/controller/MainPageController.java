@@ -1,13 +1,21 @@
 package com.ua.nure.client.controller;
 
-import com.ua.nure.client.Client;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import com.ua.nure.client.annotation.Command;
+import com.ua.nure.client.tag.ChatPane;
+import com.ua.nure.client.tag.RoomsPane;
+import com.ua.nure.data.ClientPackage;
 
-@Component
+import static com.ua.nure.util.ClientCommandNames.*;
 public class MainPageController extends Controller {
-    @Autowired
-    public MainPageController(Client client) {
-        super(client);
+
+    private RoomsPane roomsPane;
+    private ChatPane chatPane;
+
+    @Command(UPDATE_MESSAGES_PANE)
+    private void updateMessages(ClientPackage clientPackage) {
+    }
+
+    @Command(UPDATE_ROOMS_PANE)
+    private void updateRooms(ClientPackage clientPackage) {
     }
 }
