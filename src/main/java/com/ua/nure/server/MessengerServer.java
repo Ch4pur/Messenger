@@ -1,5 +1,6 @@
 package com.ua.nure.server;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ua.nure.data.ServerPackage;
 import com.ua.nure.data.ClientPackage;
@@ -20,7 +21,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,28 +58,34 @@ public class MessengerServer {
         private final Map<String, Object> session;
         private final Exchanger<ClientPackage> responseExchanger;
 
+        private final RequestHandler requestHandler;
+        private final ResponseHandler responseHandler;
+
         private class RequestHandler extends Thread {
             @SneakyThrows
             @Override
             public void run() {
-                while (!socket.isClosed()) {
-                    ClientPackage response = new ClientPackage();
-                    try {
-                        String jsonString = reader.readUTF();
-                        ServerPackage request = jsonFormatter.readValue(jsonString, ServerPackage.class);
-                        Command command = commands.get(request.getCommandName());
-                        if (command == null) {
-                            throw new CommandException("There are no such command");
+                try {
+                    while (!socket.isClosed()) {
+                        ClientPackage response = new ClientPackage();
+                        try {
+                            String jsonString = reader.readUTF();
+                            ServerPackage request = jsonFormatter.readValue(jsonString, ServerPackage.class);
+                            Command command = commands.get(request.getCommandName());
+                            if (command == null) {
+                                throw new CommandException("There are no such command");
+                            }
+                            response = command.execute(session, request.getAttributes());
+                        } catch (IOException e) {
+                            response.setExceptionMessage("505! Error from server");
+                        } catch (CommandException e) {
+                            response.setExceptionMessage(e.getMessage());
                         }
-                        response = command.execute(session, request.getAttributes());
-                    } catch (IOException e) {
-                        response.setExceptionMessage("505! Error from server");
-                    } catch (CommandException e) {
-                        response.setExceptionMessage(e.getMessage());
+                        responseExchanger.exchange(response);
                     }
-                    responseExchanger.exchange(response);
+                } catch (InterruptedException e) {
+                    close();
                 }
-                close();
             }
         }
 
@@ -91,7 +97,6 @@ public class MessengerServer {
                     while (!socket.isClosed()) {
                         ClientPackage response = responseExchanger.exchange(null);
                         String jsonResponse = jsonFormatter.writeValueAsString(response);
-                        System.out.println(session);
                         if (response.getReceiversId().isEmpty()) {
                             synchronized (writer) {
                                 writer.writeUTF(jsonResponse);
@@ -106,7 +111,7 @@ public class MessengerServer {
                             }
                         }
                     }
-                } catch (SocketException e) {
+                } catch (IOException | InterruptedException e) {
                     close();
                 }
             }
@@ -130,14 +135,17 @@ public class MessengerServer {
             session = new HashMap<>();
             responseExchanger = new Exchanger<>();
 
-            RequestHandler requestHandler = new RequestHandler();
-            ResponseHandler responseHandler = new ResponseHandler();
+            requestHandler = new RequestHandler();
+            responseHandler = new ResponseHandler();
             requestHandler.start();
             responseHandler.start();
         }
 
         @Override
         public void close() throws IOException {
+            requestHandler.interrupt();
+            responseHandler.interrupt();
+
             reader.close();
             writer.close();
             if (!socket.isClosed()) {
@@ -165,6 +173,4 @@ public class MessengerServer {
         serverSocket = new ServerSocket(port);
         runServer();
     }
-
-
 }

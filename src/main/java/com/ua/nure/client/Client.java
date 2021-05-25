@@ -1,5 +1,6 @@
 package com.ua.nure.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ua.nure.client.annotation.ClientCommand;
 import com.ua.nure.client.controller.Controller;
@@ -37,32 +38,32 @@ public class Client {
     private Controller currentController;
     private final Map<String, Object> session;
 
-    private volatile boolean isRunning;
-
     private class ResponseHandler extends Thread {
-        @SneakyThrows
         @Override
         public void run() {
             try {
                 @Cleanup DataOutputStream writer = new DataOutputStream(socket.getOutputStream());
-                while (isRunning) {
+                while (!socket.isClosed()) {
                     ServerPackage serverPackage = requestPackageExchanger.exchange(null);
                     String jsonString = jsonMapper.writeValueAsString(serverPackage);
                     writer.writeUTF(jsonString);
                 }
             } catch (SocketException | InterruptedException e) {
-                System.out.println(socket + "Response handler is closed");
+                System.out.println(socket + " Response handler is closed");
+            } catch (JsonProcessingException e) {
+                System.out.println("Json error " + e.getMessage());
+            } catch (IOException e) {
+                System.out.println((e.getMessage()));
             }
         }
     }
 
     private class RequestHandler extends Thread {
-        @SneakyThrows
         @Override
         public void run() {
             try {
                 @Cleanup DataInputStream reader = new DataInputStream(socket.getInputStream());
-                while (isRunning) {
+                while (!socket.isClosed()) {
                     String jsonResponse = reader.readUTF();
                     ClientPackage clientPackage = jsonMapper.readValue(jsonResponse, ClientPackage.class);
                     String errorMessage = clientPackage.getExceptionMessage();
@@ -74,7 +75,13 @@ public class Client {
                     }
                 }
             } catch (SocketException e) {
-                System.out.println(socket + " request handler is closed");
+                System.out.println(socket + " Request handler is closed");
+            } catch (JsonProcessingException e) {
+                System.out.println("Json error " + e.getMessage());
+            } catch (IOException e) {
+                System.out.println((e.getMessage()));
+            } catch (InvocationTargetException | IllegalAccessException e) {
+                System.out.println("Reflection error " + e.getMessage());
             }
         }
 
@@ -114,7 +121,6 @@ public class Client {
         requestHandler = new RequestHandler();
         responseHandler = new ResponseHandler();
 
-        isRunning = true;
         requestHandler.start();
         responseHandler.start();
     }
@@ -124,7 +130,6 @@ public class Client {
             throw new IOException();
         }
         socket.close();
-        isRunning = false;
         responseHandler.interrupt();
         requestHandler.interrupt();
     }
