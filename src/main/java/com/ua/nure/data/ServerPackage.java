@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ToString
-public class RequestPackage {
+public class ServerPackage {
     @Getter
     @Setter
     @JsonProperty
@@ -19,7 +19,7 @@ public class RequestPackage {
     @JsonProperty
     private final Map<String, Object> attributes;
 
-    public RequestPackage() {
+    public ServerPackage() {
         attributes = new HashMap<>();
     }
 

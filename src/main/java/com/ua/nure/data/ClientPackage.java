@@ -1,7 +1,6 @@
 package com.ua.nure.data;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 @ToString
-public class ResponsePackage {
+public class ClientPackage {
 
 
     @Getter
@@ -29,7 +28,7 @@ public class ResponsePackage {
 
     @Getter
     @JsonProperty
-    private final Map<String, Object> cacheChanges= new HashMap<>();
+    private final Map<String, Object> sessionChanges = new HashMap<>();
 
     @Getter
     @Setter
@@ -37,8 +36,8 @@ public class ResponsePackage {
     private String exceptionMessage;
 
 
-    public void putCacheChange(String key, Object object) {
-        cacheChanges.put(key, object);
+    public void putSessionChange(String key, Object object) {
+        sessionChanges.put(key, object);
     }
 
     public void addReceiverId(long id) {
