@@ -35,8 +35,6 @@ public class UserServiceImpl implements UserService {
         if (user == null) {
             throw new ServiceException("User with specified login doesn't exist");
         }
-        System.out.println("Real password " + user.getPassword());
-        System.out.println(password);
         if (!user.getPassword().equals(password)) {
             throw new ServiceException("Wrong password");
         }
