@@ -2,6 +2,7 @@ package com.ua.nure.server.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.*;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "room_members")
+@JsonRootName("message")
 public class Member implements Serializable {
 
     @Id

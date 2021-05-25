@@ -1,6 +1,7 @@
 package com.ua.nure.server.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,6 +21,7 @@ import java.sql.Timestamp;
         name = "messages",
         uniqueConstraints = @UniqueConstraint(columnNames = {"member_id", "sent_date"})
 )
+@JsonRootName("message")
 public class Message {
 
     @Id
