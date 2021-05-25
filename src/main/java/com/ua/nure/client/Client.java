@@ -1,7 +1,7 @@
 package com.ua.nure.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ua.nure.client.annotation.Command;
+import com.ua.nure.client.annotation.ClientCommand;
 import com.ua.nure.client.controller.Controller;
 import com.ua.nure.data.ServerPackage;
 import com.ua.nure.data.ClientPackage;
@@ -80,7 +80,7 @@ public class Client {
 
         private void executeControllerCommand(ClientPackage clientPackage) throws InvocationTargetException, IllegalAccessException {
             for (Method method : getAnnotatedFields(currentController.getClass())) {
-                if (method.getAnnotation(Command.class).value().equals(clientPackage.getCommandName())) {
+                if (method.getAnnotation(ClientCommand.class).value().equals(clientPackage.getCommandName())) {
                     method.setAccessible(true);
                     method.invoke(currentController,clientPackage);
                     method.setAccessible(false);
@@ -92,7 +92,7 @@ public class Client {
             List<Method> res = new ArrayList<>();
             for (Class<?> c = clazz; c != null; c = c.getSuperclass()) {
                 for (Method method : c.getDeclaredMethods()) {
-                    if (method.isAnnotationPresent(Command.class)) {
+                    if (method.isAnnotationPresent(ClientCommand.class)) {
                         res.add(method);
                     }
                 }

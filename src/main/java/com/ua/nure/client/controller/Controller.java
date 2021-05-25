@@ -1,7 +1,7 @@
 package com.ua.nure.client.controller;
 
 import com.ua.nure.client.Client;
-import com.ua.nure.client.annotation.Command;
+import com.ua.nure.client.annotation.ClientCommand;
 import com.ua.nure.client.util.Util;
 import com.ua.nure.data.ClientPackage;
 import com.ua.nure.data.ServerPackage;
@@ -114,7 +114,7 @@ public abstract class Controller implements Initializable {
         Scene scene = new Scene(root);
         Platform.runLater(() -> stage.setScene(scene));
     }
-    @Command(SWITCH_PANE)
+    @ClientCommand(SWITCH_PANE)
     protected void switchCurrentFxml(ClientPackage clientPackage) throws IOException {
         switchCurrentFxml((String) clientPackage.getAttributes().get(Namings.PATH));
     }
