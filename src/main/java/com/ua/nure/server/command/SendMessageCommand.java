@@ -7,7 +7,7 @@ import com.ua.nure.server.model.entity.Message;
 import com.ua.nure.server.model.entity.User;
 import com.ua.nure.server.model.service.MemberService;
 import com.ua.nure.server.model.service.MessageService;
-import com.ua.nure.data.ResponsePackage;
+import com.ua.nure.data.ClientPackage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +15,9 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+
+import static com.ua.nure.util.Namings.*;
+import static com.ua.nure.util.ClientCommandNames.*;
 
 @Component
 public class SendMessageCommand implements Command {
@@ -29,11 +32,11 @@ public class SendMessageCommand implements Command {
     }
 
     @Override
-    public ResponsePackage execute(Map<String, Object> session, Map<String, Object> attributes) throws CommandException {
+    public ClientPackage execute(Map<String, Object> session, Map<String, Object> attributes) throws CommandException {
 
-        User user = (User) session.get("user");
-        long roomId = (int) attributes.get("roomId");
-        String content = (String) attributes.get("content");
+        User user = (User) session.get(USERNAME);
+        long roomId = (int) attributes.get(ROOM_ID);
+        String content = (String) attributes.get(CONTENT);
 
         try {
             Member member = memberService.getMemberByRoomIdAndUserId(user.getId(), roomId);
@@ -44,15 +47,15 @@ public class SendMessageCommand implements Command {
 
             messageService.sendMessage(message);
 
-            ResponsePackage responsePackage = new ResponsePackage();
+            ClientPackage responsePackage = new ClientPackage();
             List<Member> memberList = memberService.getMembersByRoomId(roomId);
             for (Member roomMember : memberList) {
                 User roomUser = roomMember.getUser();
                 responsePackage.addReceiverId(roomUser.getId());
             }
 
-            responsePackage.setCommandName("updateRoom");
-            responsePackage.addAttribute("newMessage", message);
+            responsePackage.setCommandName(UPDATE_MESSAGES_PANE);
+            responsePackage.addAttribute(NEW_MESSAGE, message);
 
             return responsePackage;
         } catch (ServiceException e) {

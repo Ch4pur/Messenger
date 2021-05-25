@@ -1,14 +1,18 @@
 package com.ua.nure.server.command;
 
+import com.ua.nure.client.util.Util;
 import com.ua.nure.server.exception.CommandException;
 import com.ua.nure.server.exception.ServiceException;
 import com.ua.nure.server.model.entity.User;
 import com.ua.nure.server.model.service.UserService;
-import com.ua.nure.data.ResponsePackage;
+import com.ua.nure.data.ClientPackage;
+import com.ua.nure.util.ClientCommandNames;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
+
+import static com.ua.nure.util.Namings.*;
 
 @Component
 public class SignUpCommand implements Command {
@@ -21,10 +25,10 @@ public class SignUpCommand implements Command {
     }
 
     @Override
-    public ResponsePackage execute(Map<String, Object> session, Map<String, Object> attributes) throws CommandException {
-        String login = (String) attributes.get("login");
-        String password = (String) attributes.get("password");
-        String username = (String) attributes.get("username");
+    public ClientPackage execute(Map<String, Object> session, Map<String, Object> attributes) throws CommandException {
+        String login = (String) attributes.get(LOGIN);
+        String password = (String) attributes.get(PASSWORD);
+        String username = (String) attributes.get(USERNAME);
 
         User user = new User(login, username, password);
         try {
@@ -33,10 +37,12 @@ public class SignUpCommand implements Command {
             throw new CommandException(e.getMessage());
         }
 
-        session.put("user", user);
-        ResponsePackage responsePackage = new ResponsePackage();
-        responsePackage.setCommandName("toMainPage");
-        responsePackage.putCacheChange("user", user);
+        session.put(MAIN_USER, user);
+
+        ClientPackage responsePackage = new ClientPackage();
+        responsePackage.setCommandName(ClientCommandNames.SWITCH_PANE);
+        responsePackage.addAttribute(PATH, Util.MAIN_PAGE_PATH);
+        responsePackage.putSessionChange(MAIN_USER, user);
 
         return responsePackage;
     }
