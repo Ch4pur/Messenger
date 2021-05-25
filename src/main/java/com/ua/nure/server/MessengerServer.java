@@ -1,8 +1,8 @@
 package com.ua.nure.server;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ua.nure.data.RequestPackage;
-import com.ua.nure.data.ResponsePackage;
+import com.ua.nure.data.ServerPackage;
+import com.ua.nure.data.ClientPackage;
 import com.ua.nure.server.exception.CommandException;
 import com.ua.nure.server.model.entity.User;
 import com.ua.nure.server.command.Command;
@@ -56,17 +56,17 @@ public class MessengerServer {
         private final DataOutputStream writer;
         @Getter
         private final Map<String, Object> session;
-        private final Exchanger<ResponsePackage> responseExchanger;
+        private final Exchanger<ClientPackage> responseExchanger;
 
         private class RequestHandler extends Thread {
             @SneakyThrows
             @Override
             public void run() {
                 while (!socket.isClosed()) {
-                    ResponsePackage response = new ResponsePackage();
+                    ClientPackage response = new ClientPackage();
                     try {
                         String jsonString = reader.readUTF();
-                        RequestPackage request = jsonFormatter.readValue(jsonString, RequestPackage.class);
+                        ServerPackage request = jsonFormatter.readValue(jsonString, ServerPackage.class);
                         Command command = commands.get(request.getCommandName());
                         if (command == null) {
                             throw new CommandException("There are no such command");
@@ -89,8 +89,9 @@ public class MessengerServer {
             public void run() {
                 try {
                     while (!socket.isClosed()) {
-                        ResponsePackage response = responseExchanger.exchange(null);
+                        ClientPackage response = responseExchanger.exchange(null);
                         String jsonResponse = jsonFormatter.writeValueAsString(response);
+                        System.out.println(session);
                         if (response.getReceiversId().isEmpty()) {
                             synchronized (writer) {
                                 writer.writeUTF(jsonResponse);
