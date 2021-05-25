@@ -12,9 +12,10 @@ public final class Util {
 
 
     public static final String LOGIN_ERROR_MESSAGE = "Login must have from 2 to 19 length starting from lower case";
-    public static final String PASSWORD_ERROR_MESSAGE = "Password must have minimum eight characters, at least one letter and one number";
-    public static final String NONEXISTENT_USER_MESSAGE = "User with specified login doesn`t exist";
-    public static final String WRONG_PASSWORD_MESSAGE = "Wrong password";
+    public static final String PASSWORD_ERROR_MESSAGE = "" +
+            "Password must have minimum eight characters, at least one letter and one number";
+
+    public static final String SERVER_ERROR_MESSAGE = "Server error";
 
     public static final String LOGIN_REGEX = "^[A-Za-z][A-Za-z\\d]{2,19}$";
     public static final String PASSWORD_REGEX = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$";
