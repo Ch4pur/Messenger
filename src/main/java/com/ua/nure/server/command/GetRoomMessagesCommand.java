@@ -17,25 +17,23 @@ import java.util.Map;
 @Component
 public class GetRoomMessagesCommand implements Command {
 
-    private final RoomService roomService;
     private final MessageService messageService;
 
     @Autowired
-    public GetRoomMessagesCommand(RoomService roomService, MessageService messageService) {
-        this.roomService = roomService;
+    public GetRoomMessagesCommand(MessageService messageService) {
         this.messageService = messageService;
     }
 
     @Override
     public ClientPackage execute(Map<String, Object> session, Map<String, Object> attributes) throws CommandException {
-        long roomId = (long) attributes.get(Namings.ROOM_ID);
+        long roomId = (int) attributes.get(Namings.ROOM_ID);
 
         try {
             List<Message> messageList = messageService.getMessagesByRoomId(roomId);
 
             ClientPackage responsePackage = new ClientPackage();
 
-            responsePackage.setCommandName(ClientCommandNames.UPDATE_MESSAGES_PANE);
+            responsePackage.setCommandName(ClientCommandNames.GET_MESSAGES);
 
             responsePackage.addAttribute(Namings.ROOM_ID, roomId);
             responsePackage.addAttribute(Namings.MESSAGES, messageList);

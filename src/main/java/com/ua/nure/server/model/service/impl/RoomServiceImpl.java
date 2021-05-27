@@ -33,15 +33,20 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
-    public void createDialog(long firstUserId, long secondUserId) throws ServiceException {
-        if (!(userRepository.existsById(firstUserId) && userRepository.existsById(secondUserId))) {
-            throw new ServiceException("Some of the users don't exist");
-        }
-        User firstUser = userRepository.getOne(firstUserId);
-        User secondUser = userRepository.getOne(secondUserId);
+    public Room createDialog(String firstUserLogin, String secondUserLogin) throws ServiceException {
+        User firstUser = userRepository.getUserByLogin(firstUserLogin);
+        User secondUser = userRepository.getUserByLogin(secondUserLogin);
 
-        Room room = new Room(-1,"Dialog",List.of(firstUser,secondUser),2);
-        roomRepository.save(room);
+        if (firstUser == null || secondUser == null) {
+            throw new ServiceException("User doesn't exist");
+        }
+
+        String title = String.format("%s, %s",
+                firstUser.getUsernameOrLogin(), secondUser.getUsernameOrLogin()
+        );
+
+        Room room = new Room(-1, title, List.of(firstUser, secondUser), 2);
+        return roomRepository.save(room);
     }
 
     @Override

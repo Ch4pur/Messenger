@@ -1,5 +1,6 @@
 package com.ua.nure.data;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,32 +14,22 @@ import java.util.Map;
 @ToString
 public class ClientPackage {
 
-
     @Getter
     @Setter
     @JsonProperty
     private String commandName;
 
-    @Getter
     @JsonProperty
     private Map<String, Object> attributes = new HashMap<>();
 
     @Getter
-    private final List<Long> receiversId= new ArrayList<>();
-
-    @Getter
-    @JsonProperty
-    private final Map<String, Object> sessionChanges = new HashMap<>();
+    @JsonIgnore
+    private final List<Long> receiversId = new ArrayList<>();
 
     @Getter
     @Setter
     @JsonProperty
     private String exceptionMessage;
-
-
-    public void putSessionChange(String key, Object object) {
-        sessionChanges.put(key, object);
-    }
 
     public void addReceiverId(long id) {
         receiversId.add(id);
@@ -46,5 +37,9 @@ public class ClientPackage {
 
     public void addAttribute(String key, Object attribute) {
         attributes.put(key, attribute);
+    }
+
+    public Object getAttribute(String key) {
+        return attributes.get(key);
     }
 }

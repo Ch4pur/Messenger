@@ -35,7 +35,6 @@ public class Client {
     private final Exchanger<ServerPackage> requestPackageExchanger;
 
     private Controller currentController;
-    private final Map<String, Object> session;
 
     private class ResponseHandler extends Thread {
         @Override
@@ -66,7 +65,6 @@ public class Client {
                     String jsonResponse = reader.readUTF();
                     ClientPackage clientPackage = jsonMapper.readValue(jsonResponse, ClientPackage.class);
                     String errorMessage = clientPackage.getExceptionMessage();
-                    session.putAll(clientPackage.getSessionChanges());
                     if (errorMessage != null) {
                         currentController.showError(errorMessage);
                     } else {
@@ -109,7 +107,6 @@ public class Client {
     }
 
     public Client() {
-        session = new HashMap<>();
         requestPackageExchanger = new Exchanger<>();
     }
 
@@ -126,7 +123,7 @@ public class Client {
     }
 
     public void disconnect() throws IOException {
-        if (socket == null || socket.isClosed()) {
+        if (socket == null) {
             throw new IOException();
         }
         socket.close();
@@ -136,10 +133,6 @@ public class Client {
 
     public void sendPackageToServer(ServerPackage requestPackage) throws InterruptedException {
         requestPackageExchanger.exchange(requestPackage);
-    }
-
-    public Map<String, Object> getSession() {
-        return session;
     }
 
     public void setCurrentController(Controller currentController) {

@@ -34,7 +34,7 @@ public class SignInCommand implements Command {
             session.put(MAIN_USER, user);
 
             ClientPackage clientPackage = new ClientPackage();
-            clientPackage.putSessionChange(MAIN_USER, user);
+
             clientPackage.setCommandName(ClientCommandNames.SWITCH_PANE);
             clientPackage.addAttribute(PATH, Util.MAIN_PAGE_PATH);
 

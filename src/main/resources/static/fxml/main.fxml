@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -8,88 +9,71 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="mainPane" onMouseClicked="#disableFocus" prefHeight="700.0" prefWidth="1100.0" styleClass="rootPane"
-            xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.ua.nure.client.controller.MainPageController">
+<AnchorPane fx:id="mainPane" onMouseClicked="#disableFocus" prefHeight="700.0" prefWidth="1100.0" styleClass="rootPane" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ua.nure.client.controller.MainPageController">
     <stylesheets>
-        <URL value="@../css/general.css"/>
-        <URL value="@../css/main.css"/>
+        <URL value="@../css/general.css" />
+        <URL value="@../css/main.css" />
     </stylesheets>
-    <AnchorPane fx:id="additionPane" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed"
-                styleClass="additionPane">
+    <AnchorPane fx:id="additionPane" onMouseDragged="#onMouseDragged" onMousePressed="#onMousePressed" styleClass="additionPane">
         <Button fx:id="exitButton" layoutX="1058.0" layoutY="1.0" onMouseClicked="#exit" styleClass="button">
             <graphic>
                 <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../image/icon/close_window.png"/>
+                    <Image url="@../image/icon/close_window.png" />
                 </ImageView>
             </graphic>
         </Button>
-        <Button fx:id="minimizeButton" layoutX="1016.0" layoutY="1.0" mnemonicParsing="false"
-                onMouseClicked="#minimizeWindow" styleClass="button">
+        <Button fx:id="minimizeButton" layoutX="1016.0" layoutY="1.0" mnemonicParsing="false" onMouseClicked="#minimizeWindow" styleClass="button">
             <graphic>
                 <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                    <Image url="@../image/icon/minimize-window.png"/>
+                    <Image url="@../image/icon/minimize-window.png" />
                 </ImageView>
             </graphic>
         </Button>
     </AnchorPane>
     <AnchorPane layoutY="35.0" prefHeight="666.0" prefWidth="300.0">
         <children>
+            <ScrollPane hbarPolicy="NEVER" layoutY="35.0" prefHeight="630.0" prefWidth="300.0" style="-fx-focus-color: transparent;" vbarPolicy="NEVER">
+                <content>
+                    <VBox fx:id="roomsBox" prefHeight="163.0" prefWidth="300.0" />
+                </content>
+            </ScrollPane>
             <AnchorPane prefHeight="35.0" prefWidth="300.0" style="-fx-background-color: white;">
                 <children>
-                    <TextField fx:id="userSearchingField" layoutX="57.0" layoutY="4.0" prefHeight="26.0"
-                               prefWidth="229.0" promptText="Search people for new room"/>
-                    <ImageView fx:id="searchUser" fitHeight="26.0" fitWidth="30.0" layoutX="14.0" layoutY="5.0"
-                               pickOnBounds="true" preserveRatio="true">
+                    <TextField fx:id="userSearchingField" layoutX="57.0" layoutY="4.0" prefHeight="26.0" prefWidth="229.0" promptText="Search people for new room" />
+                    <ImageView onMouseClicked="#createDialogRoom" fx:id="createDialog" fitHeight="26.0" fitWidth="30.0" layoutX="14.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@../image/icon/search.png"/>
+                            <Image url="@../image/icon/search.png" />
                         </image>
                     </ImageView>
                 </children>
             </AnchorPane>
-            <ScrollPane hbarPolicy="NEVER" layoutY="35.0" prefHeight="630.0" prefWidth="300.0" vbarPolicy="NEVER">
-                <content>
-                    <VBox fx:id="roomsBox" prefHeight="163.0" prefWidth="300.0">
-<!--                        <AnchorPane prefHeight="50.0" prefWidth="300.0" styleClass="room, selected">-->
-<!--                            <Label layoutX="14.0" layoutY="4.0" styleClass="title" text="Username"/>-->
-<!--                            <Label layoutX="14.0" layoutY="27.0" prefHeight="18.0" prefWidth="230.0"-->
-<!--                                   styleClass="content"-->
-<!--                                   text="Text text text texttextetetetetereverddddddddddddddddddddddddddddddddddddddddddddddddddddd"/>-->
-<!--                            <HBox layoutX="260.0" layoutY="11.0" styleClass="new_messages">-->
-<!--                                <Label layoutX="9.0" layoutY="4.0" prefHeight="18.0" prefWidth="9.0"-->
-<!--                                       styleClass="counter"/>-->
-<!--                            </HBox>-->
-<!--                        </AnchorPane>-->
-                    </VBox>
-                </content>
-            </ScrollPane>
         </children>
     </AnchorPane>
     <AnchorPane layoutX="300.0" layoutY="35.0" prefHeight="665.0" prefWidth="800.0">
         <children>
-            <AnchorPane prefHeight="35.0" prefWidth="800.0" style="-fx-background-color: white;">
+            <AnchorPane prefHeight="35.0" prefWidth="800.0" style="-fx-background-color: white;" styleClass="title_pane">
                 <children>
-                    <Label layoutX="14.0" layoutY="9.0" prefHeight="18.0" prefWidth="400.0" text="Room title"/>
+                    <Label fx:id="roomTitle" layoutX="14.0" layoutY="5.0" prefHeight="18.0" prefWidth="400.0" styleClass="title" text="Select room" />
                 </children>
             </AnchorPane>
             <AnchorPane layoutY="631.0" prefHeight="35.0" prefWidth="800.0" style="-fx-background-color: white;">
                 <children>
-                    <TextField fx:id="messageField" layoutX="14.0" layoutY="4.0" prefHeight="26.0" prefWidth="720.0"/>
-                    <ImageView fx:id="sendMessageButton" accessibleRole="BUTTON" fitHeight="25.0" fitWidth="25.0"
-                               layoutX="761.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                    <TextField fx:id="messageField" layoutX="14.0" layoutY="4.0" prefHeight="26.0" prefWidth="720.0" />
+                    <ImageView fx:id="sendMessageButton" accessibleRole="BUTTON" fitHeight="25.0" fitWidth="25.0" layoutX="761.0" layoutY="5.0" onMouseClicked="#sendMessage" pickOnBounds="true" preserveRatio="true">
                         <image>
-                            <Image url="@../image/icon/send-message.png"/>
+                            <Image url="@../image/icon/send-message.png" />
                         </image>
+                  <cursor>
+                     <Cursor fx:constant="HAND" />
+                  </cursor>
                     </ImageView>
                 </children>
             </AnchorPane>
-            <ScrollPane hbarPolicy="NEVER" layoutY="35.0" prefHeight="595.0" prefWidth="800.0"
-                        style="-fx-background-color: transparent;" styleClass="scroll-pane" vbarPolicy="NEVER">
+            <ScrollPane hbarPolicy="NEVER" layoutY="35.0" prefHeight="595.0" prefWidth="800.0" style="-fx-background-color: transparent;" styleClass="scroll-pane" vbarPolicy="NEVER">
                 <content>
-                    <VBox prefHeight="595.0" prefWidth="800.0"/>
+                    <VBox fx:id="messagesBox" prefHeight="595.0" prefWidth="800.0" />
                 </content>
             </ScrollPane>
         </children>

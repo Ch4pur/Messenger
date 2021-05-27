@@ -1,5 +1,6 @@
 package com.ua.nure.server.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import lombok.AllArgsConstructor;
@@ -31,8 +32,8 @@ public class User {
     @JsonProperty
     private String login;
 
-    @Column(name = "username" )
-    @Size(min = 3, max = 20, message = "Username length must be from 3 to 20")
+    @Column(name = "username")
+    @Size(max = 20, message = "Username length must be from 3 to 20")
     @JsonProperty
     private String username;
 
@@ -45,6 +46,11 @@ public class User {
         this.login = login;
         this.username = username;
         this.password = password;
+    }
+
+    @JsonIgnore
+    public String getUsernameOrLogin() {
+        return username == null || username.isEmpty() ? login : username;
     }
 }
 

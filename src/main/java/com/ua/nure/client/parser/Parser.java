@@ -14,6 +14,10 @@ public class Parser {
         this.objectMapper = objectMapper;
     }
 
+    public <T> T parse(Object unparsedObject, Class<T> clazz) {
+        return objectMapper.convertValue(unparsedObject, clazz);
+    }
+
     public <T> List<T> parseList(List<?> unparsedList, Class<T> clazz) {
         CollectionType type = objectMapper.getTypeFactory().constructCollectionType(List.class, clazz);
         return objectMapper.convertValue(unparsedList, type);

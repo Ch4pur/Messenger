@@ -8,7 +8,7 @@ import java.util.List;
 public interface RoomService {
     void createRoom(Room room) throws ServiceException;
 
-    void createDialog(long firstUserId, long secondUserId) throws ServiceException;
+    Room createDialog(String firstUserLogin, String secondUserLogin) throws ServiceException;
 
     void removeRoomById(long id);
 

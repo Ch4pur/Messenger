@@ -109,14 +109,17 @@ public abstract class Controller {
 
     @CommandFromServer(SWITCH_PANE)
     protected void switchCurrentFxml(ClientPackage clientPackage) throws IOException {
-        switchCurrentFxml((String) clientPackage.getAttributes().get(Namings.PATH));
+        switchCurrentFxml((String) clientPackage.getAttribute(Namings.PATH));
     }
 
     public void showError(String errorMessage) {
-        Platform.runLater(() -> {
-            errorLabel.setText(errorMessage);
-            errorPane.setVisible(true);
-        });
+        System.out.println(errorMessage);
+        if(errorPane != null) {
+            Platform.runLater(() -> {
+                errorLabel.setText(errorMessage);
+                errorPane.setVisible(true);
+            });
+        }
     }
 
     protected void addValidation(TextField textField, String validationRegex, String errorMessage) {

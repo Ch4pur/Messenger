@@ -25,29 +25,41 @@
     -fx-pref-width: 286px;
 }
 
-.rooms_pane .rooms_scroll .rooms .room {
+.room {
     -fx-pref-height: 50px;
-    -fx-pref-width: 290px;
+    -fx-pref-width: 400px;
     -fx-cursor: hand;
+    -fx-border-color: #81EFEC;
 }
 
-/*.rooms_pane .rooms_scroll .room*/ .selected {
-    -fx-background-color: #81EFEC;
-    -fx-border-color: #4BD6D2;
+.room:hover {
+    -fx-background-color: #4BD6D2;
 }
 
-/*.rooms_pane .rooms_scroll*/ .room .title {
+.room:selected {
+    -fx-background-color: #d64b4b;
+}
+
+/*!*.rooms_pane .rooms_scroll .room*! .selected {*/
+/*    -fx-background-color: #81EFEC;*/
+/*    -fx-border-color: #4BD6D2;*/
+/*}*/
+
+/*.rooms_pane .rooms_scroll*/
+.room .title {
     -fx-text-fill: #c477d3;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 
-/*.rooms_pane .rooms_scroll*/ .room .content {
-/*    -fx-pref-height: 18px;*/
-/*    -fx-pref-width: 194px;*/
+/*.rooms_pane .rooms_scroll*/
+.room .content {
+    /*    -fx-pref-height: 18px;*/
+    /*    -fx-pref-width: 194px;*/
 }
 
-/*.rooms_pane .rooms_scroll*/ .room .new_messages {
+/*.rooms_pane .rooms_scroll*/
+.room .new_messages {
     -fx-pref-height: 25px;
     -fx-pref-width: 25px;
     -fx-background-color: white;
@@ -55,10 +67,13 @@
     -fx-border-radius: 15px;
     -fx-background-radius: 15px;
 }
-/*.rooms_pane .rooms_scroll*/ .room .new_messages .counter {
- -fx-font-size: 12px;
+
+/*.rooms_pane .rooms_scroll*/
+.room .new_messages .counter {
+    -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
+
 .tool_pane {
     -fx-background-color: #EEFEFF;
 }
@@ -73,7 +88,7 @@
     -fx-pref-height: 30px;
     -fx-pref-width: 431px;
     -fx-text-fill: #9557a1;
-    -fx-font-size: 20px;
+    -fx-font-size: 18px;
 }
 
 .title_pane .search {
@@ -85,11 +100,26 @@
 }
 
 .message {
-
+    -fx-background-color: white;
+    -fx-border-color: black;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-background-insets: 5px;
+    -fx-border-insets: 5px;
+    -fx-max-width: 200px;
+    -fx-padding: 15px;
 }
 
-.message .your {
+.message .--title {
+    -fx-text-fill: #c477d3;
+}
 
+.message .--content {
+    -fx-wrap-text: break-word;
+}
+
+.-your {
+    -fx-background-color: #4BD6D2;
 }
 
 .message .others {

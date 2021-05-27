@@ -42,7 +42,6 @@ public class SignUpCommand implements Command {
         ClientPackage responsePackage = new ClientPackage();
         responsePackage.setCommandName(ClientCommandNames.SWITCH_PANE);
         responsePackage.addAttribute(PATH, Util.MAIN_PAGE_PATH);
-        responsePackage.putSessionChange(MAIN_USER, user);
 
         return responsePackage;
     }

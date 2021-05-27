@@ -1,6 +1,5 @@
 package com.ua.nure.server.command;
 
-import com.ua.nure.client.Client;
 import com.ua.nure.data.ClientPackage;
 import com.ua.nure.server.exception.CommandException;
 import com.ua.nure.server.exception.ServiceException;
@@ -35,7 +34,7 @@ public class GetUserRoomsCommand implements Command{
             List<Room> rooms = roomService.getRoomsByUserId(user.getId());
 
             ClientPackage clientPackage = new ClientPackage();
-            clientPackage.setCommandName(ClientCommandNames.UPDATE_ROOMS_PANE);
+            clientPackage.setCommandName(ClientCommandNames.GET_ALL_ROOMS);
             clientPackage.addAttribute(Namings.ROOMS, rooms);
             System.out.println(rooms);
             return clientPackage;

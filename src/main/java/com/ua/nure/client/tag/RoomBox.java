@@ -1,22 +1,44 @@
 package com.ua.nure.client.tag;
 
 import com.ua.nure.server.model.entity.Room;
-import javafx.fxml.FXML;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.css.PseudoClass;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
 
-import java.util.List;
-import java.util.Set;
 
 public class RoomBox extends AnchorPane {
 
-    private Room room;
+    private static final PseudoClass SELECTED_PSEUDO_CLASS = PseudoClass.getPseudoClass("selected");
 
+    private final Room room;
 
+    private BooleanProperty isActiveProperty;
 
+    public RoomBox(Room room) {
+        this.room = room;
+        isActiveProperty = new SimpleBooleanProperty(false);
 
-    private void createRoomPanes() {
-
+        isActiveProperty.set(false);
+        createRoomPanes();
     }
 
+    public void setIsActiveProperty(boolean isActiveProperty) {
+        this.isActiveProperty.set(isActiveProperty);
+    }
+
+    private void createRoomPanes() {
+        Label roomTitle = new Label(room.getTitle());
+        roomTitle.getStyleClass().add("title");
+        getStyleClass().add("room");
+
+        getChildren().add(roomTitle);
+
+        isActiveProperty.addListener(e -> pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, isActiveProperty.get()));
+    }
+
+    public Room getRoom() {
+        return room;
+    }
 }

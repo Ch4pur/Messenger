@@ -14,11 +14,13 @@ public final class Namings {
     public static final String CONTENT = "content";
 
     public static final String MAIN_USER = "user";
-    public static final String OTHER_USER_ID = "userId";
+    public static final String OTHER_USER_LOGIN = "userLogin";
 
     public static final String NEW_MESSAGE = "newMessage";
     public static final String MESSAGES = "messages";
+
     public static final String ROOMS = "rooms";
+    public static final String NEW_ROOM = "newRoom";
 
     public static final String PATH = "path";
 }

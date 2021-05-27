@@ -34,12 +34,12 @@ public class SendMessageCommand implements Command {
     @Override
     public ClientPackage execute(Map<String, Object> session, Map<String, Object> attributes) throws CommandException {
 
-        User user = (User) session.get(USERNAME);
+        User user = (User) session.get(MAIN_USER);
         long roomId = (int) attributes.get(ROOM_ID);
         String content = (String) attributes.get(CONTENT);
 
         try {
-            Member member = memberService.getMemberByRoomIdAndUserId(user.getId(), roomId);
+            Member member = memberService.getMemberByRoomIdAndUserId(roomId, user.getId());
             Message message = new Message();
             message.setContent(content);
             message.setMember(member);
@@ -54,9 +54,10 @@ public class SendMessageCommand implements Command {
                 responsePackage.addReceiverId(roomUser.getId());
             }
 
-            responsePackage.setCommandName(UPDATE_MESSAGES_PANE);
+            responsePackage.setCommandName(ADD_MESSAGE);
             responsePackage.addAttribute(NEW_MESSAGE, message);
-    
+            responsePackage.addAttribute(ROOM_ID, roomId);
+
             return responsePackage;
         } catch (ServiceException e) {
             throw new CommandException(e.getMessage());
