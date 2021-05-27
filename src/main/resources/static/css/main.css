@@ -31,23 +31,23 @@
     -fx-cursor: hand;
 }
 
-.rooms_pane .rooms_scroll .rooms .selected {
+/*.rooms_pane .rooms_scroll .room*/ .selected {
     -fx-background-color: #81EFEC;
     -fx-border-color: #4BD6D2;
 }
 
-.rooms_pane .rooms_scroll .room .title {
+/*.rooms_pane .rooms_scroll*/ .room .title {
     -fx-text-fill: #c477d3;
     -fx-font-size: 14px;
     -fx-font-weight: bold;
 }
 
-.rooms_pane .rooms_scroll .room .content {
-    -fx-pref-height: 18px;
-    -fx-pref-width: 194px;
+/*.rooms_pane .rooms_scroll*/ .room .content {
+/*    -fx-pref-height: 18px;*/
+/*    -fx-pref-width: 194px;*/
 }
 
-.rooms_pane .rooms_scroll .room .new_messages {
+/*.rooms_pane .rooms_scroll*/ .room .new_messages {
     -fx-pref-height: 25px;
     -fx-pref-width: 25px;
     -fx-background-color: white;
@@ -55,7 +55,7 @@
     -fx-border-radius: 15px;
     -fx-background-radius: 15px;
 }
-.rooms_pane .rooms_scroll .room .new_messages .counter {
+/*.rooms_pane .rooms_scroll*/ .room .new_messages .counter {
  -fx-font-size: 12px;
     -fx-font-weight: bold;
 }
@@ -112,4 +112,8 @@
 
 .writing_pane .send_message {
     -fx-cursor: HAND;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
 }
