@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.ua.nure.util.ServerCommandNames.*;
+
 @Configuration
 public class ApplicationBeans {
 
@@ -29,6 +30,7 @@ public class ApplicationBeans {
         commands.put(SEND_MESSAGE, context.getBean(SendMessageCommand.class));
         commands.put(GET_MESSAGES, context.getBean(GetRoomMessagesCommand.class));
         commands.put(CREATE_DIALOG, context.getBean(CreateDialogRoomCommand.class));
+        commands.put(GET_ROOMS, context.getBean(GetUserRoomsCommand.class));
 
         return commands;
     }

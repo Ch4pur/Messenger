@@ -56,7 +56,7 @@ public class SendMessageCommand implements Command {
 
             responsePackage.setCommandName(UPDATE_MESSAGES_PANE);
             responsePackage.addAttribute(NEW_MESSAGE, message);
-
+    
             return responsePackage;
         } catch (ServiceException e) {
             throw new CommandException(e.getMessage());

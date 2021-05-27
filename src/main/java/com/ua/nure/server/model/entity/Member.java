@@ -31,7 +31,7 @@ public class Member implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id")
-    @JsonBackReference
+    @JsonProperty
     private Room room;
 
     @Column(name = "can_write")
