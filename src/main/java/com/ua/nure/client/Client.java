@@ -2,12 +2,11 @@ package com.ua.nure.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ua.nure.client.annotation.ClientCommand;
+import com.ua.nure.client.annotation.CommandFromServer;
 import com.ua.nure.client.controller.Controller;
 import com.ua.nure.data.ServerPackage;
 import com.ua.nure.data.ClientPackage;
 import lombok.Cleanup;
-import lombok.SneakyThrows;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -81,13 +80,14 @@ public class Client {
             } catch (IOException e) {
                 System.out.println((e.getMessage()));
             } catch (InvocationTargetException | IllegalAccessException e) {
+                e.printStackTrace();
                 System.out.println("Reflection error " + e.getMessage());
             }
         }
 
         private void executeControllerCommand(ClientPackage clientPackage) throws InvocationTargetException, IllegalAccessException {
             for (Method method : getAnnotatedFields(currentController.getClass())) {
-                if (method.getAnnotation(ClientCommand.class).value().equals(clientPackage.getCommandName())) {
+                if (method.getAnnotation(CommandFromServer.class).value().equals(clientPackage.getCommandName())) {
                     method.setAccessible(true);
                     method.invoke(currentController,clientPackage);
                     method.setAccessible(false);
@@ -99,7 +99,7 @@ public class Client {
             List<Method> res = new ArrayList<>();
             for (Class<?> c = clazz; c != null; c = c.getSuperclass()) {
                 for (Method method : c.getDeclaredMethods()) {
-                    if (method.isAnnotationPresent(ClientCommand.class)) {
+                    if (method.isAnnotationPresent(CommandFromServer.class)) {
                         res.add(method);
                     }
                 }

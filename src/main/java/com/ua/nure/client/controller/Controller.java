@@ -1,7 +1,9 @@
 package com.ua.nure.client.controller;
 
 import com.ua.nure.client.Client;
-import com.ua.nure.client.annotation.ClientCommand;
+import com.ua.nure.client.annotation.CommandFromServer;
+import com.ua.nure.client.application.ClientMain;
+import com.ua.nure.client.config.ApplicationContext;
 import com.ua.nure.client.util.Util;
 import com.ua.nure.data.ClientPackage;
 import com.ua.nure.data.ServerPackage;
@@ -9,8 +11,6 @@ import com.ua.nure.util.Namings;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -22,11 +22,10 @@ import javafx.stage.Stage;
 import lombok.SneakyThrows;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 import static com.ua.nure.util.ClientCommandNames.*;
-public abstract class Controller implements Initializable {
+
+public abstract class Controller {
 
     @FXML
     protected AnchorPane mainPane;
@@ -49,12 +48,13 @@ public abstract class Controller implements Initializable {
     private double xOffset;
     private double yOffset;
 
-    protected Client client;
     protected Stage stage;
 
     @SneakyThrows
     @FXML
     protected void exit() {
+        ApplicationContext context = ClientMain.getContext();
+        Client client = (Client) context.getBean("client");
         client.disconnect();
         Platform.exit();
     }
@@ -82,24 +82,15 @@ public abstract class Controller implements Initializable {
     }
 
     @FXML
-    protected void hideError()  {
-        errorPane.setVisible(false);
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize() {
         Platform.runLater(() -> {
             mainPane.requestFocus();
             if (errorPane != null) {
                 errorPane.setVisible(false);
+                errorPane.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> errorPane.setVisible(false));
             }
         });
     }
-
-    protected Stage getStageFromEvent(MouseEvent event) {
-        return (Stage) ((Node) event.getSource()).getScene().getWindow();
-    }
-
 
     protected void switchCurrentFxml(String stringPath) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(stringPath));
@@ -107,17 +98,20 @@ public abstract class Controller implements Initializable {
 
         Controller controller = loader.getController();
 
-        controller.setClient(client);
         controller.setStage(stage);
+        ApplicationContext context = ClientMain.getContext();
+        Client client = (Client) context.getBean("client");
         client.setCurrentController(controller);
 
         Scene scene = new Scene(root);
         Platform.runLater(() -> stage.setScene(scene));
     }
-    @ClientCommand(SWITCH_PANE)
+
+    @CommandFromServer(SWITCH_PANE)
     protected void switchCurrentFxml(ClientPackage clientPackage) throws IOException {
         switchCurrentFxml((String) clientPackage.getAttributes().get(Namings.PATH));
     }
+
     public void showError(String errorMessage) {
         Platform.runLater(() -> {
             errorLabel.setText(errorMessage);
@@ -138,6 +132,8 @@ public abstract class Controller implements Initializable {
 
     public void sendAnswerToClient(ServerPackage serverPackage) {
         try {
+            ApplicationContext context = ClientMain.getContext();
+            Client client = (Client) context.getBean("client");
             client.sendPackageToServer(serverPackage);
         } catch (InterruptedException e) {
             showError(Util.SERVER_ERROR_MESSAGE);
@@ -146,9 +142,5 @@ public abstract class Controller implements Initializable {
 
     public void setStage(Stage stage) {
         this.stage = stage;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
     }
 }

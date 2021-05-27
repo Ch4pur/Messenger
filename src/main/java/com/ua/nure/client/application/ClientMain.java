@@ -15,17 +15,21 @@ import java.io.IOException;
 
 public class ClientMain extends Application {
 
-    private static Client client;
-    private static String startingPath;
+    private static ApplicationContext applicationContext;
 
     @Override
     public void start(Stage stage) throws IOException {
         stage.initStyle(StageStyle.UNDECORATED);
+
+        String startingPath = (String) applicationContext.getBean("startingPagePath");
         FXMLLoader loader = new FXMLLoader(getClass().getResource(startingPath));
+
         Parent root = loader.load();
+
         Controller controller = loader.getController();
         controller.setStage(stage);
-        controller.setClient(client);
+
+        Client client = (Client) applicationContext.getBean("client");
         client.setCurrentController(controller);
 
         stage.setScene(new Scene(root));
@@ -33,20 +37,13 @@ public class ClientMain extends Application {
     }
 
     public static void main(String[] args) throws IOException {
-        ApplicationContext.createContext();
+        applicationContext = ApplicationContext.createContext();
+        Client client = (Client) applicationContext.getBean("client");
         client.connect();
         launch(args);
     }
 
-    public static Client getClient() {
-        return client;
-    }
-
-    public static void setClient(Client client) {
-        ClientMain.client = client;
-    }
-
-    public static void setStartingPath(String startingPath) {
-        ClientMain.startingPath = startingPath;
+    public static ApplicationContext getContext() {
+        return applicationContext;
     }
 }

@@ -2,6 +2,7 @@ package com.ua.nure.client.controller;
 
 import com.ua.nure.client.util.Util;
 import com.ua.nure.data.ServerPackage;
+import com.ua.nure.util.ServerCommandNames;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -35,18 +36,18 @@ public class SignUpController extends Controller {
 
 
     @FXML
-    protected void signUp() throws InterruptedException {
+    protected void signUp()  {
         if (loginField.getText().isBlank() || passwordField.getText().isBlank()) {
             return;
         }
         ServerPackage serverPackage = new ServerPackage();
 
-        serverPackage.setCommandName("signUp");
+        serverPackage.setCommandName(ServerCommandNames.SIGN_UP);
         serverPackage.addAttribute(LOGIN, loginField.getText());
         serverPackage.addAttribute(PASSWORD, passwordField.getText());
         serverPackage.addAttribute(USERNAME, usernameField.getText());
 
-        client.sendPackageToServer(serverPackage);
+        sendAnswerToClient(serverPackage);
     }
 
     @FXML
@@ -55,8 +56,8 @@ public class SignUpController extends Controller {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.initialize(url, resourceBundle);
+    public void initialize() {
+        super.initialize();
         Platform.runLater(() -> {
             addValidation(loginField, Util.LOGIN_REGEX, Util.LOGIN_ERROR_MESSAGE);
             addValidation(passwordField, Util.PASSWORD_REGEX, Util.PASSWORD_ERROR_MESSAGE);

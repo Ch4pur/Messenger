@@ -2,14 +2,12 @@ package com.ua.nure.client.controller;
 
 import com.ua.nure.client.util.Util;
 import com.ua.nure.data.ServerPackage;
+import com.ua.nure.util.ServerCommandNames;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
-import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,11 +31,11 @@ public class SignInController extends Controller {
             return;
         }
         ServerPackage serverPackage = new ServerPackage();
-        serverPackage.setCommandName("signIn");
+        serverPackage.setCommandName(ServerCommandNames.SIGN_IN);
         serverPackage.addAttribute(LOGIN, loginField.getText());
         serverPackage.addAttribute(PASSWORD, passwordField.getText());
 
-        client.sendPackageToServer(serverPackage);
+        sendAnswerToClient(serverPackage);
     }
 
     @FXML
@@ -46,8 +44,8 @@ public class SignInController extends Controller {
     }
 
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        super.initialize(url, resourceBundle);
+    public void initialize() {
+        super.initialize();
         Platform.runLater(() -> addValidation(loginField, Util.LOGIN_REGEX, Util.LOGIN_ERROR_MESSAGE));
     }
 }
