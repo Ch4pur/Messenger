@@ -19,10 +19,10 @@ create table room_members
     user_id   int not null,
     room_id   int not null,
 
-    can_write  boolean default false,
+    can_write  boolean default true,
     can_invite boolean default false,
     can_edit   boolean default false,
-    can_remove boolean default false,
+    can_remove boolean default true,
 
     foreign key (user_id) references users (user_id),
     foreign key (room_id) references rooms (room_id),
