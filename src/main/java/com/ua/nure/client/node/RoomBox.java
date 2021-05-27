@@ -1,4 +1,4 @@
-package com.ua.nure.client.tag;
+package com.ua.nure.client.node;
 
 import com.ua.nure.server.model.entity.Room;
 import javafx.beans.property.BooleanProperty;

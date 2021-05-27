@@ -56,6 +56,7 @@ public class SendMessageCommand implements Command {
 
             responsePackage.setCommandName(ADD_MESSAGE);
             responsePackage.addAttribute(NEW_MESSAGE, message);
+            responsePackage.addAttribute(MAIN_USER, user);
             responsePackage.addAttribute(ROOM_ID, roomId);
 
             return responsePackage;

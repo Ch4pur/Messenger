@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Map;
 
+import static com.ua.nure.util.Namings.*;
 @Component
 public class GetRoomMessagesCommand implements Command {
 
@@ -26,7 +27,7 @@ public class GetRoomMessagesCommand implements Command {
 
     @Override
     public ClientPackage execute(Map<String, Object> session, Map<String, Object> attributes) throws CommandException {
-        long roomId = (int) attributes.get(Namings.ROOM_ID);
+        long roomId = (int) attributes.get(ROOM_ID);
 
         try {
             List<Message> messageList = messageService.getMessagesByRoomId(roomId);
@@ -35,8 +36,9 @@ public class GetRoomMessagesCommand implements Command {
 
             responsePackage.setCommandName(ClientCommandNames.GET_MESSAGES);
 
-            responsePackage.addAttribute(Namings.ROOM_ID, roomId);
-            responsePackage.addAttribute(Namings.MESSAGES, messageList);
+            responsePackage.addAttribute(ROOM_ID, roomId);
+            responsePackage.addAttribute(MAIN_USER, session.get(MAIN_USER));
+            responsePackage.addAttribute(MESSAGES, messageList);
 
             return responsePackage;
         } catch (ServiceException e) {

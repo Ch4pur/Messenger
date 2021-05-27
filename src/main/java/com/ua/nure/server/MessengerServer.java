@@ -119,7 +119,7 @@ public class MessengerServer {
             private List<DataOutputStream> getOutputStreamsByUserId(long id) {
                 List<DataOutputStream> streams = new ArrayList<>();
                 for (ClientListener client : clients) {
-                    User user = (User) client.getSession().get("user");
+                    User user = (User) client.getSession().get(Namings.MAIN_USER);
                     if (user != null && user.getId() == id) {
                         streams.add(client.getWriter());
                     }

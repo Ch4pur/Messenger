@@ -3,24 +3,24 @@ package com.ua.nure.client.controller;
 import com.ua.nure.client.annotation.CommandFromServer;
 import com.ua.nure.client.application.ClientMain;
 import com.ua.nure.client.config.ApplicationContext;
+import com.ua.nure.client.node.MessageBox;
 import com.ua.nure.client.parser.Parser;
-import com.ua.nure.client.tag.RoomBox;
+import com.ua.nure.client.node.RoomBox;
 import com.ua.nure.data.ClientPackage;
 import com.ua.nure.data.ServerPackage;
 import com.ua.nure.server.model.entity.Message;
 import com.ua.nure.server.model.entity.Room;
+import com.ua.nure.server.model.entity.User;
 import com.ua.nure.util.ServerCommandNames;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -107,25 +107,10 @@ public class MainPageController extends Controller {
         ApplicationContext context = ClientMain.getContext();
         Parser parser = (Parser) context.getBean("parser");
         List<Message> messages = parser.parseList((List<?>) clientPackage.getAttribute(MESSAGES), Message.class);
+        User user = parser.parse(clientPackage.getAttribute(MAIN_USER), User.class);
         Platform.runLater(() -> {
             for (Message message : messages) {
-                String senderLogin = message.getMember().getUser().getLogin();
-                Label senderLabel = new Label(senderLogin);
-                Label content = new Label(message.getContent());
-                content.getStyleClass().add("--content");
-
-                SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-
-                String dateString = format.format(message.getDate());
-
-                Label sentDate = new Label(dateString);
-                HBox innerBox = new HBox(senderLabel, sentDate);
-
-                VBox messageBox = new VBox(innerBox, content);
-                messageBox.setMaxHeight(Region.USE_COMPUTED_SIZE);
-                messageBox.setMinHeight(Region.USE_COMPUTED_SIZE);
-                messageBox.getStyleClass().add("message");
-                messagesBox.getChildren().add(messageBox);
+                createMessage(user, message);
             }
         });
     }
@@ -139,21 +124,9 @@ public class MainPageController extends Controller {
         ApplicationContext context = ClientMain.getContext();
         Parser parser = (Parser) context.getBean("parser");
         Message message = parser.parse(clientPackage.getAttribute(NEW_MESSAGE), Message.class);
-        Platform.runLater(() -> {
-            String senderLogin = message.getMember().getUser().getLogin();
-            Label senderLabel = new Label(senderLogin);
-            Label content = new Label(message.getContent());
-            content.getStyleClass().add("--content");
+        User user = parser.parse(clientPackage.getAttribute(MAIN_USER), User.class);
 
-            Label sentDate = new Label(message.getDate().toString());
-            HBox innerBox = new HBox(senderLabel, sentDate);
-
-            VBox messageBox = new VBox(innerBox, content);
-            messageBox.setMaxHeight(Region.USE_COMPUTED_SIZE);
-            messageBox.setMinHeight(Region.USE_COMPUTED_SIZE);
-            messageBox.getStyleClass().add("message");
-            messagesBox.getChildren().add(messageBox);
-        });
+        Platform.runLater(() -> createMessage(user, message));
     }
 
     @CommandFromServer(GET_ALL_ROOMS)
@@ -165,13 +138,7 @@ public class MainPageController extends Controller {
         Platform.runLater(() -> {
             roomsBox.getChildren().clear();
             for (Room room : rooms) {
-                RoomBox roomBox = new RoomBox(room);
-                roomBox.setPrefSize(ROOM_PREF_WIDTH, ROOM_PREF_HEIGHT);
-                roomBox.addEventHandler(MouseEvent.MOUSE_CLICKED, this::selectRoom);
-
-                roomsBox.getChildren().add(roomBox);
-
-                roomBoxes.add(roomBox);
+                createRoom(room);
             }
         });
     }
@@ -180,17 +147,9 @@ public class MainPageController extends Controller {
     private void addRoom(ClientPackage clientPackage) {
         ApplicationContext context = ClientMain.getContext();
         Parser parser = (Parser) context.getBean("parser");
-        System.out.println(clientPackage);
         Room room = parser.parse(clientPackage.getAttribute(NEW_ROOM), Room.class);
-        Platform.runLater(() -> {
-            RoomBox roomBox = new RoomBox(room);
-            roomBox.setPrefSize(ROOM_PREF_WIDTH, ROOM_PREF_HEIGHT);
-            roomBox.addEventHandler(MouseEvent.MOUSE_CLICKED, this::selectRoom);
 
-            roomsBox.getChildren().add(roomBox);
-
-            roomBoxes.add(roomBox);
-        });
+        Platform.runLater(() -> createRoom(room));
     }
 
     @Override
@@ -202,5 +161,27 @@ public class MainPageController extends Controller {
             serverPackage.setCommandName(ServerCommandNames.GET_ROOMS);
             sendAnswerToClient(serverPackage);
         });
+    }
+
+    private void createRoom(Room room) {
+        RoomBox roomBox = new RoomBox(room);
+        roomBox.setPrefSize(ROOM_PREF_WIDTH, ROOM_PREF_HEIGHT);
+        roomBox.addEventHandler(MouseEvent.MOUSE_CLICKED, this::selectRoom);
+
+        roomsBox.getChildren().add(roomBox);
+
+        roomBoxes.add(roomBox);
+    }
+
+    private void createMessage(User sender, Message message) {
+        MessageBox chatBox = new MessageBox(message);
+        if (sender.equals(message.getMember().getUser())) {
+            chatBox.setPadding(new Insets(0,0, 0, messagesBox.getWidth() - 350));
+            chatBox.getStyleClass().add("your");
+        } else {
+            chatBox.getStyleClass().add("other");
+        }
+
+        messagesBox.getChildren().add(chatBox);
     }
 }
