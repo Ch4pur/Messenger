@@ -3,12 +3,11 @@ package com.ua.nure.client.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ua.nure.client.Client;
 import com.ua.nure.client.annotation.Bean;
-import com.ua.nure.client.application.ClientMain;
 import com.ua.nure.client.parser.Parser;
 import com.ua.nure.client.util.Util;
 import com.ua.nure.util.ConnectionConstants;
 
-import java.lang.reflect.Field;
+
 import java.util.Arrays;
 
 
