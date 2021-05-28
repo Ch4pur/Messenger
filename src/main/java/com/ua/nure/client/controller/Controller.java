@@ -4,6 +4,7 @@ import com.ua.nure.client.Client;
 import com.ua.nure.client.annotation.CommandFromServer;
 import com.ua.nure.client.application.ClientMain;
 import com.ua.nure.client.config.ApplicationContext;
+import com.ua.nure.client.util.BeanNames;
 import com.ua.nure.client.util.Util;
 import com.ua.nure.data.ClientPackage;
 import com.ua.nure.data.ServerPackage;
@@ -54,7 +55,7 @@ public abstract class Controller {
     @FXML
     protected void exit() {
         ApplicationContext context = ClientMain.getContext();
-        Client client = (Client) context.getBean("client");
+        Client client = (Client) context.getBean(BeanNames.CLIENT);
         client.disconnect();
         Platform.exit();
     }
@@ -100,7 +101,7 @@ public abstract class Controller {
 
         controller.setStage(stage);
         ApplicationContext context = ClientMain.getContext();
-        Client client = (Client) context.getBean("client");
+        Client client = (Client) context.getBean(BeanNames.CLIENT);
         client.setCurrentController(controller);
 
         Scene scene = new Scene(root);
@@ -136,7 +137,7 @@ public abstract class Controller {
     public void sendAnswerToClient(ServerPackage serverPackage) {
         try {
             ApplicationContext context = ClientMain.getContext();
-            Client client = (Client) context.getBean("client");
+            Client client = (Client) context.getBean(BeanNames.CLIENT);
             client.sendPackageToServer(serverPackage);
         } catch (InterruptedException e) {
             showError(Util.SERVER_ERROR_MESSAGE);

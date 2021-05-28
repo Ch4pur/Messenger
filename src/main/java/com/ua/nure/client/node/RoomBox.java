@@ -1,5 +1,6 @@
 package com.ua.nure.client.node;
 
+import com.ua.nure.client.util.StyleClasses;
 import com.ua.nure.server.model.entity.Room;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -31,7 +32,7 @@ public class RoomBox extends AnchorPane {
     private void createRoomPanes() {
         Label roomTitle = new Label(room.getTitle());
         roomTitle.getStyleClass().add("title");
-        getStyleClass().add("room");
+        getStyleClass().add(StyleClasses.ROOM);
 
         getChildren().add(roomTitle);
 

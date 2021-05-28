@@ -4,6 +4,7 @@ package com.ua.nure.client.application;
 import com.ua.nure.client.Client;
 import com.ua.nure.client.controller.Controller;
 import com.ua.nure.client.config.ApplicationContext;
+import com.ua.nure.client.util.BeanNames;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,7 +22,7 @@ public class ClientMain extends Application {
     public void start(Stage stage) throws IOException {
         stage.initStyle(StageStyle.UNDECORATED);
 
-        String startingPath = (String) applicationContext.getBean("startingPagePath");
+        String startingPath = (String) applicationContext.getBean(BeanNames.STARTING_PATH);
         FXMLLoader loader = new FXMLLoader(getClass().getResource(startingPath));
 
         Parent root = loader.load();
@@ -29,7 +30,7 @@ public class ClientMain extends Application {
         Controller controller = loader.getController();
         controller.setStage(stage);
 
-        Client client = (Client) applicationContext.getBean("client");
+        Client client = (Client) applicationContext.getBean(BeanNames.CLIENT);
         client.setCurrentController(controller);
 
         stage.setScene(new Scene(root));
@@ -38,7 +39,7 @@ public class ClientMain extends Application {
 
     public static void main(String[] args) throws IOException {
         applicationContext = ApplicationContext.createContext();
-        Client client = (Client) applicationContext.getBean("client");
+        Client client = (Client) applicationContext.getBean(BeanNames.CLIENT);
         client.connect();
         launch(args);
     }
