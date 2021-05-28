@@ -23,6 +23,10 @@ public class ClientPackage {
     private Map<String, Object> attributes = new HashMap<>();
 
     @Getter
+    @JsonProperty
+    private Map<String, Object> sessionChanges = new HashMap<>();
+
+    @Getter
     @JsonIgnore
     private final List<Long> receiversId = new ArrayList<>();
 
@@ -41,5 +45,9 @@ public class ClientPackage {
 
     public Object getAttribute(String key) {
         return attributes.get(key);
+    }
+
+    public void addSessionChange(String key, Object attribute) {
+        sessionChanges.put(key, attribute);
     }
 }

@@ -39,10 +39,11 @@ public class SignUpCommand implements Command {
 
         session.put(MAIN_USER, user);
 
-        ClientPackage responsePackage = new ClientPackage();
-        responsePackage.setCommandName(ClientCommandNames.SWITCH_PANE);
-        responsePackage.addAttribute(PATH, Util.MAIN_PAGE_PATH);
+        ClientPackage clientPackage = new ClientPackage();
+        clientPackage.setCommandName(ClientCommandNames.SWITCH_PANE);
+        clientPackage.addAttribute(PATH, Util.MAIN_PAGE_PATH);
+        clientPackage.addSessionChange(MAIN_USER, user);
 
-        return responsePackage;
+        return clientPackage;
     }
 }

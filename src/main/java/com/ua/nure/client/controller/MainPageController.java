@@ -1,5 +1,6 @@
 package com.ua.nure.client.controller;
 
+import com.ua.nure.client.Client;
 import com.ua.nure.client.annotation.CommandFromServer;
 import com.ua.nure.client.application.ClientMain;
 import com.ua.nure.client.config.ApplicationContext;
@@ -107,7 +108,9 @@ public class MainPageController extends Controller {
         ApplicationContext context = ClientMain.getContext();
         Parser parser = (Parser) context.getBean("parser");
         List<Message> messages = parser.parseList((List<?>) clientPackage.getAttribute(MESSAGES), Message.class);
-        User user = parser.parse(clientPackage.getAttribute(MAIN_USER), User.class);
+        Client client = (Client) context.getBean("client");
+        User user = parser.parse(client.getSession().get(MAIN_USER), User.class);
+
         Platform.runLater(() -> {
             for (Message message : messages) {
                 createMessage(user, message);
@@ -124,7 +127,9 @@ public class MainPageController extends Controller {
         ApplicationContext context = ClientMain.getContext();
         Parser parser = (Parser) context.getBean("parser");
         Message message = parser.parse(clientPackage.getAttribute(NEW_MESSAGE), Message.class);
-        User user = parser.parse(clientPackage.getAttribute(MAIN_USER), User.class);
+        Client client = (Client) context.getBean("client");
+
+        User user = parser.parse(client.getSession().get(MAIN_USER), User.class);
 
         Platform.runLater(() -> createMessage(user, message));
     }
@@ -176,7 +181,7 @@ public class MainPageController extends Controller {
     private void createMessage(User sender, Message message) {
         MessageBox chatBox = new MessageBox(message);
         if (sender.equals(message.getMember().getUser())) {
-            chatBox.setPadding(new Insets(0,0, 0, messagesBox.getWidth() - 350));
+            chatBox.setPadding(new Insets(0, 0, 0, messagesBox.getWidth() - 350));
             chatBox.getStyleClass().add("your");
         } else {
             chatBox.getStyleClass().add("other");

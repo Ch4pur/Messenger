@@ -37,6 +37,7 @@ public class SignInCommand implements Command {
 
             clientPackage.setCommandName(ClientCommandNames.SWITCH_PANE);
             clientPackage.addAttribute(PATH, Util.MAIN_PAGE_PATH);
+            clientPackage.addSessionChange(MAIN_USER, user);
 
             return clientPackage;
         } catch (ServiceException e) {

@@ -2,6 +2,7 @@ package com.ua.nure.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mysql.cj.Session;
 import com.ua.nure.client.annotation.CommandFromServer;
 import com.ua.nure.client.controller.Controller;
 import com.ua.nure.data.ServerPackage;
@@ -36,6 +37,8 @@ public class Client {
 
     private Controller currentController;
 
+    private Map<String, Object> session;
+
     private class ResponseHandler extends Thread {
         @Override
         public void run() {
@@ -65,6 +68,7 @@ public class Client {
                     String jsonResponse = reader.readUTF();
                     ClientPackage clientPackage = jsonMapper.readValue(jsonResponse, ClientPackage.class);
                     String errorMessage = clientPackage.getExceptionMessage();
+                    session.putAll(clientPackage.getSessionChanges());
                     if (errorMessage != null) {
                         currentController.showError(errorMessage);
                     } else {
@@ -108,6 +112,7 @@ public class Client {
 
     public Client() {
         requestPackageExchanger = new Exchanger<>();
+        session = new HashMap<>();
     }
 
     public void connect() throws IOException {
@@ -149,5 +154,9 @@ public class Client {
 
     public void setHost(String host) {
         this.host = host;
+    }
+
+    public Map<String, Object> getSession() {
+        return session;
     }
 }
