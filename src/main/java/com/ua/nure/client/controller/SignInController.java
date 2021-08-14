@@ -10,10 +10,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-import static com.ua.nure.util.Namings.*;
+import static com.ua.nure.util.Namings.LOGIN;
+import static com.ua.nure.util.Namings.PASSWORD;
+
+
 public class SignInController extends Controller {
 
     @FXML
@@ -26,7 +27,7 @@ public class SignInController extends Controller {
     protected Button toSignUp;
 
     @FXML
-    protected void authorize() throws InterruptedException {
+    protected void authorize() {
         if (loginField.getText().isBlank()) {
             return;
         }

@@ -2,12 +2,13 @@ package com.ua.nure.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mysql.cj.Session;
 import com.ua.nure.client.annotation.CommandFromServer;
 import com.ua.nure.client.controller.Controller;
 import com.ua.nure.data.ServerPackage;
 import com.ua.nure.data.ClientPackage;
 import lombok.Cleanup;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -24,10 +25,13 @@ import java.util.concurrent.Exchanger;
 
 public class Client {
 
+    @Setter
     private ObjectMapper jsonMapper;
-
+    @Setter
     private int port;
+    @Setter
     private String host;
+
     private Socket socket;
 
     private RequestHandler requestHandler;
@@ -35,9 +39,10 @@ public class Client {
 
     private final Exchanger<ServerPackage> requestPackageExchanger;
 
+    @Setter
     private Controller currentController;
-
-    private Map<String, Object> session;
+    @Getter
+    private final Map<String, Object> session;
 
     private class ResponseHandler extends Thread {
         @Override
@@ -138,25 +143,5 @@ public class Client {
 
     public void sendPackageToServer(ServerPackage requestPackage) throws InterruptedException {
         requestPackageExchanger.exchange(requestPackage);
-    }
-
-    public void setCurrentController(Controller currentController) {
-        this.currentController = currentController;
-    }
-
-    public void setJsonMapper(ObjectMapper jsonMapper) {
-        this.jsonMapper = jsonMapper;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public Map<String, Object> getSession() {
-        return session;
     }
 }

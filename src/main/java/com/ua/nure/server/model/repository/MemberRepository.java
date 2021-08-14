@@ -1,6 +1,7 @@
 package com.ua.nure.server.model.repository;
 
-import com.ua.nure.server.model.entity.*;
+
+import com.ua.nure.server.model.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

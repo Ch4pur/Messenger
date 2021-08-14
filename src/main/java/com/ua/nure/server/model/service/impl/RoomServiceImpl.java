@@ -64,9 +64,8 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public Room getRoomById(long id) {
-        return roomRepository.getOne(id);
+        return roomRepository.getById(id);
     }
-
 
     @Override
     public List<Room> getRoomsByUserId(long id) throws ServiceException {

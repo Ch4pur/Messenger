@@ -4,17 +4,18 @@ import com.ua.nure.server.exception.CommandException;
 import com.ua.nure.server.exception.ServiceException;
 import com.ua.nure.server.model.entity.Message;
 import com.ua.nure.server.model.service.MessageService;
-import com.ua.nure.server.model.service.RoomService;
 import com.ua.nure.data.ClientPackage;
 import com.ua.nure.util.ClientCommandNames;
-import com.ua.nure.util.Namings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
-import static com.ua.nure.util.Namings.*;
+import static com.ua.nure.util.Namings.MAIN_USER;
+import static com.ua.nure.util.Namings.MESSAGES;
+import static com.ua.nure.util.Namings.ROOM_ID;
+
 @Component
 public class GetRoomMessagesCommand implements Command {
 

@@ -20,29 +20,30 @@
 
 .rooms_pane .rooms_scroll .rooms {
     -fx-min-height: 0;
-    -fx-min-width: 0px;
+    -fx-min-width: 0;
     -fx-pref-height: 634px;
     -fx-pref-width: 286px;
 }
 
 .room {
-    -fx-pref-height: 50px;
-    -fx-pref-width: 400px;
+    -fx-min-height: 50px;
+    -fx-pref-width: 298px;
     -fx-cursor: hand;
-    -fx-border-color: #81EFEC;
+    -fx-background-color: rgba(255, 255, 255, 0.19);
 }
 
 .room:hover {
-    -fx-background-color: #4BD6D2;
+    -fx-background-color: rgba(224, 200, 137, 0.57);
 }
 
 .room:selected {
-    -fx-background-color: #d64b4b;
+    -fx-background-color: rgba(167, 100, 108, 0.61);
 }
 
 .room .title {
-    -fx-text-fill: #c477d3;
-    -fx-font-size: 14px;
+    -fx-border-insets: 0 0 0 20px;
+    -fx-text-fill: rgba(0, 0, 0, 0.55);
+    -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
 
@@ -59,7 +60,6 @@
     -fx-background-radius: 15px;
 }
 
-/*.rooms_pane .rooms_scroll*/
 .room .new_messages .counter {
     -fx-font-size: 12px;
     -fx-font-weight: bold;
@@ -79,7 +79,7 @@
     -fx-pref-height: 30px;
     -fx-pref-width: 431px;
     -fx-text-fill: #c477d3;
-    -fx-font-size: 18px;
+    -fx-font-size: 20px;
 }
 
 .title_pane .search {
@@ -93,20 +93,43 @@
     -fx-background-radius: 15px;
     -fx-background-insets: 15px;
     -fx-border-insets: 15px;
-    -fx-max-width: 350px;
+    -fx-pref-width: 350px;
+    -fx-max-width: 775px;
     -fx-padding: 15px;
 }
 
-.message .--content {
-    -fx-wrap-text: break-word;
+.message .inner {
 }
 
-.your .message {
-    -fx-background-color: #81EFEC;
+.message .inner .content {
+    -fx-wrap-text: true;
 }
 
-.other .message {
-    -fx-background-color: #c477d3;
+.message .inner .header .sender {
+    -fx-font-weight: bold;
+    -fx-pref-width: 250px;
+    -fx-wrap-text: true;
+}
+
+.message .inner .header .sentDate {
+
+}
+
+.your {
+    -fx-background-insets: 0 0 0 450px;
+    -fx-border-insets: 0 0 0 450px;
+}
+.other {
+    -fx-max-width: 350px;
+}
+.your .inner .header .sender {
+    -fx-text-fill: #81EFEC;
+    -fx-font-weight: bold;
+}
+
+.other .inner .header .sender {
+    -fx-text-fill: #c477d3;
+    -fx-font-weight: bold;
 }
 
 .writing_pane {

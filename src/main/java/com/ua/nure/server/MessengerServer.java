@@ -1,6 +1,5 @@
 package com.ua.nure.server;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ua.nure.data.ServerPackage;
 import com.ua.nure.data.ClientPackage;
@@ -85,6 +84,8 @@ public class MessengerServer {
                     }
                 } catch (InterruptedException e) {
                     close();
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
                 }
             }
         }
@@ -113,6 +114,9 @@ public class MessengerServer {
                     }
                 } catch (IOException | InterruptedException e) {
                     close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.err.println(e.getMessage());
                 }
             }
 

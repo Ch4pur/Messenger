@@ -24,7 +24,7 @@ import lombok.SneakyThrows;
 
 import java.io.IOException;
 
-import static com.ua.nure.util.ClientCommandNames.*;
+import static com.ua.nure.util.ClientCommandNames.SWITCH_PANE;
 
 public abstract class Controller {
 
@@ -109,12 +109,12 @@ public abstract class Controller {
     }
 
     @CommandFromServer(SWITCH_PANE)
+    @SuppressWarnings("unused")
     protected void switchCurrentFxml(ClientPackage clientPackage) throws IOException {
         switchCurrentFxml((String) clientPackage.getAttribute(Namings.PATH));
     }
 
     public void showError(String errorMessage) {
-        System.out.println(errorMessage);
         if(errorPane != null) {
             Platform.runLater(() -> {
                 errorLabel.setText(errorMessage);
@@ -125,7 +125,7 @@ public abstract class Controller {
 
     protected void addValidation(TextField textField, String validationRegex, String errorMessage) {
         textField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
-            if (!newValue) {
+            if (!Boolean.TRUE.equals(newValue)) {
                 if (!textField.getText().matches(validationRegex)) {
                     textField.setText("");
                     showError(errorMessage);

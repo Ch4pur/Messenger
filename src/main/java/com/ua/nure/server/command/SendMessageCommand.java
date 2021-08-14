@@ -16,8 +16,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-import static com.ua.nure.util.Namings.*;
-import static com.ua.nure.util.ClientCommandNames.*;
+import static com.ua.nure.util.ClientCommandNames.ADD_MESSAGE;
+import static com.ua.nure.util.Namings.CONTENT;
+import static com.ua.nure.util.Namings.MAIN_USER;
+import static com.ua.nure.util.Namings.NEW_MESSAGE;
+import static com.ua.nure.util.Namings.ROOM_ID;
+
 
 @Component
 public class SendMessageCommand implements Command {

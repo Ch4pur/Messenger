@@ -11,8 +11,8 @@ public interface UserService {
     User signInUser(String login, String password) throws ServiceException;
 
     User signUpUser(User user) throws ServiceException;
-
+    //TODO implement this functional
     void updateUser(User user) throws ServiceException;
-
+    //TODO implement this functional
     void removeUserById(long id);
 }

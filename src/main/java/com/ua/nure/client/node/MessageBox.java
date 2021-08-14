@@ -2,7 +2,6 @@ package com.ua.nure.client.node;
 
 import com.ua.nure.client.util.StyleClasses;
 import com.ua.nure.server.model.entity.Message;
-import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -12,7 +11,7 @@ import java.text.SimpleDateFormat;
 
 public class MessageBox extends VBox {
 
-    private Message message;
+    private final Message message;
 
     public MessageBox(Message message) {
         this.message = message;
@@ -23,25 +22,25 @@ public class MessageBox extends VBox {
         String senderName = message.getMember().getUser().getUsernameOrLogin();
         Label senderLabel = new Label(senderName);
         senderLabel.getStyleClass().add(StyleClasses.SENDER);
-        senderLabel.setPrefWidth(150);
-        senderLabel.setWrapText(true);
+
         Label content = new Label(message.getContent());
-        content.setWrapText(true);
         content.getStyleClass().add(StyleClasses.CONTENT);
+        content.setWrapText(true);
 
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
         String dateString = format.format( message.getDate());
         Label sentDate = new Label(dateString);
-        sentDate.setPadding(new Insets(0,0,0,100));
         sentDate.getStyleClass().add(StyleClasses.SENT_DATE);
-        HBox innerBox = new HBox(senderLabel, sentDate);
 
-        VBox messageBox = new VBox(innerBox, content);
+        HBox headerBox = new HBox(senderLabel, sentDate);
+        headerBox.getStyleClass().add(StyleClasses.HEADER);
+
+        VBox messageBox = new VBox(headerBox, content);
         messageBox.setMaxHeight(Region.USE_COMPUTED_SIZE);
         messageBox.setMinHeight(Region.USE_COMPUTED_SIZE);
-        messageBox.getStyleClass().add(StyleClasses.MESSAGE);
+        messageBox.getStyleClass().add(StyleClasses.INNER);
 
+        getStyleClass().add(StyleClasses.MESSAGE);
         getChildren().add(messageBox);
     }
-
 }

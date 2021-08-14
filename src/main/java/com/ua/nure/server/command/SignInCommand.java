@@ -12,7 +12,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static com.ua.nure.util.Namings.*;
+import static com.ua.nure.util.Namings.LOGIN;
+import static com.ua.nure.util.Namings.MAIN_USER;
+import static com.ua.nure.util.Namings.PASSWORD;
+import static com.ua.nure.util.Namings.PATH;
+
 
 @Component
 public class SignInCommand implements Command {

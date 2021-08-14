@@ -12,7 +12,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-import static com.ua.nure.util.Namings.*;
+import static com.ua.nure.client.util.Util.MAIN_PAGE_PATH;
+import static com.ua.nure.util.ClientCommandNames.SWITCH_PANE;
+import static com.ua.nure.util.Namings.LOGIN;
+import static com.ua.nure.util.Namings.MAIN_USER;
+import static com.ua.nure.util.Namings.PASSWORD;
+import static com.ua.nure.util.Namings.PATH;
+import static com.ua.nure.util.Namings.USERNAME;
 
 @Component
 public class SignUpCommand implements Command {
@@ -40,8 +46,8 @@ public class SignUpCommand implements Command {
         session.put(MAIN_USER, user);
 
         ClientPackage clientPackage = new ClientPackage();
-        clientPackage.setCommandName(ClientCommandNames.SWITCH_PANE);
-        clientPackage.addAttribute(PATH, Util.MAIN_PAGE_PATH);
+        clientPackage.setCommandName(SWITCH_PANE);
+        clientPackage.addAttribute(PATH, MAIN_PAGE_PATH);
         clientPackage.addSessionChange(MAIN_USER, user);
 
         return clientPackage;

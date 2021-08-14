@@ -1,6 +1,12 @@
 package com.ua.nure.server.config;
 
-import com.ua.nure.server.command.*;
+import com.ua.nure.server.command.Command;
+import com.ua.nure.server.command.CreateDialogRoomCommand;
+import com.ua.nure.server.command.GetRoomMessagesCommand;
+import com.ua.nure.server.command.GetUserRoomsCommand;
+import com.ua.nure.server.command.SendMessageCommand;
+import com.ua.nure.server.command.SignInCommand;
+import com.ua.nure.server.command.SignUpCommand;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +15,13 @@ import org.springframework.context.annotation.Configuration;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.ua.nure.util.ServerCommandNames.*;
+import static com.ua.nure.util.ServerCommandNames.CREATE_DIALOG;
+import static com.ua.nure.util.ServerCommandNames.GET_MESSAGES;
+import static com.ua.nure.util.ServerCommandNames.GET_ROOMS;
+import static com.ua.nure.util.ServerCommandNames.SEND_MESSAGE;
+import static com.ua.nure.util.ServerCommandNames.SIGN_IN;
+import static com.ua.nure.util.ServerCommandNames.SIGN_UP;
+
 
 @Configuration
 public class ApplicationBeans {

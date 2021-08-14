@@ -2,7 +2,10 @@ package com.ua.nure.server.model.service.impl;
 
 import com.ua.nure.server.exception.ServiceException;
 import com.ua.nure.server.model.entity.Message;
-import com.ua.nure.server.model.repository.*;
+
+import com.ua.nure.server.model.repository.MemberRepository;
+import com.ua.nure.server.model.repository.MessageRepository;
+import com.ua.nure.server.model.repository.RoomRepository;
 import com.ua.nure.server.model.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -52,7 +55,7 @@ public class MessageServiceImpl implements MessageService {
         if (!messageRepository.existsById(id)) {
             throw new ServiceException("Specified message doesn't exist");
         }
-        Message message = messageRepository.getOne(id);
+        Message message = messageRepository.getById(id);
         if (!message.getMember().isCanRemove()) {
             throw new ServiceException("You dont have sufficient rights to remove message");
         }
@@ -67,7 +70,7 @@ public class MessageServiceImpl implements MessageService {
         if (newContent.isBlank()) {
             throw new ServiceException("Content can not be blanc");
         }
-        Message message = messageRepository.getOne(id);
+        Message message = messageRepository.getById(id);
         if (!message.getMember().isCanEdit()) {
             throw new ServiceException("You dont have sufficient rights to edit message");
         }

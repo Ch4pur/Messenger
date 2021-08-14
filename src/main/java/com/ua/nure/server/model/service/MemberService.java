@@ -7,11 +7,11 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface MemberService {
-
+    //TODO implement this functional
     void addMember(Member member) throws ServiceException;
-
+    //TODO implement this functional
     void updateMemberRestrictions(Member member) throws ServiceException;
-
+    //TODO implement this functional
     void removeMemberById(long member);
 
     Member getMemberByRoomIdAndUserId(long roomId, long userId) throws ServiceException;

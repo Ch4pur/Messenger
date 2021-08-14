@@ -27,13 +27,20 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.ua.nure.util.ClientCommandNames.*;
-import static com.ua.nure.util.Namings.*;
+import static com.ua.nure.util.ClientCommandNames.ADD_MESSAGE;
+import static com.ua.nure.util.ClientCommandNames.ADD_ROOM;
+import static com.ua.nure.util.ClientCommandNames.GET_ALL_ROOMS;
+import static com.ua.nure.util.ClientCommandNames.GET_MESSAGES;
+import static com.ua.nure.util.Namings.CONTENT;
+import static com.ua.nure.util.Namings.MAIN_USER;
+import static com.ua.nure.util.Namings.MESSAGES;
+import static com.ua.nure.util.Namings.NEW_MESSAGE;
+import static com.ua.nure.util.Namings.NEW_ROOM;
+import static com.ua.nure.util.Namings.OTHER_USER_LOGIN;
+import static com.ua.nure.util.Namings.ROOMS;
+import static com.ua.nure.util.Namings.ROOM_ID;
 
 public class MainPageController extends Controller {
-
-    private static final int ROOM_PREF_WIDTH = 400;
-    private static final int ROOM_PREF_HEIGHT = 50;
 
     private List<RoomBox> roomBoxes;
 
@@ -123,7 +130,7 @@ public class MainPageController extends Controller {
     @CommandFromServer(ADD_MESSAGE)
     private void addMessage(ClientPackage clientPackage) {
         long id = (int) clientPackage.getAttribute(ROOM_ID);
-        if (id != currentRoom.getRoom().getId()) {
+        if (currentRoom != null && id != currentRoom.getRoom().getId()) {
             return;
         }
         ApplicationContext context = ClientMain.getContext();
@@ -172,11 +179,8 @@ public class MainPageController extends Controller {
 
     private void createRoom(Room room) {
         RoomBox roomBox = new RoomBox(room);
-        roomBox.setPrefSize(ROOM_PREF_WIDTH, ROOM_PREF_HEIGHT);
         roomBox.addEventHandler(MouseEvent.MOUSE_CLICKED, this::selectRoom);
-
         roomsBox.getChildren().add(roomBox);
-
         roomBoxes.add(roomBox);
     }
 

@@ -7,15 +7,14 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
-import static com.ua.nure.util.Namings.*;
+import static com.ua.nure.util.Namings.LOGIN;
+import static com.ua.nure.util.Namings.PASSWORD;
+import static com.ua.nure.util.Namings.USERNAME;
+
 
 public class SignUpController extends Controller {
 

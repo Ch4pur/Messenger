@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ua.nure.client.Client;
 import com.ua.nure.client.annotation.Bean;
 import com.ua.nure.client.parser.Parser;
-import com.ua.nure.client.util.Util;
-import com.ua.nure.util.ConnectionConstants;
 
 
 import java.util.Arrays;
+
+import static com.ua.nure.client.util.Util.SIGN_IN_PAGE_PATH;
+import static com.ua.nure.util.ConnectionConstants.HOST;
+import static com.ua.nure.util.ConnectionConstants.PORT;
 
 
 public class ApplicationContext {
@@ -19,19 +21,20 @@ public class ApplicationContext {
     private ObjectMapper objectMapper;
 
     @Bean
-    private String startingPagePath;
+    private final String startingPagePath;
     @Bean
-    private Parser parser;
+    private final Parser parser;
     @Bean
     private Client client;
 
-    private ApplicationContext() {}
+    private ApplicationContext() {
+        initClient();
+        startingPagePath = SIGN_IN_PAGE_PATH;
+        parser = new Parser(objectMapper);
+    }
 
     public static ApplicationContext createContext() {
-        ApplicationContext context = new ApplicationContext();
-        context.config();
-
-        return context;
+        return new ApplicationContext();
     }
 
     public Object getBean(String name) {
@@ -41,7 +44,7 @@ public class ApplicationContext {
                     try {
                         return f.get(this);
                     } catch (IllegalAccessException e) {
-                        e.printStackTrace();
+                        System.out.println(e.getMessage());
                     }
                     return null;
                 })
@@ -49,28 +52,14 @@ public class ApplicationContext {
                 .orElse(null);
     }
 
-    private void config() {
-        initClient();
-        setStartingPath();
-        initParser();
-    }
-
     private void initClient() {
         objectMapper = new ObjectMapper();
-        port = ConnectionConstants.PORT;
-        host = ConnectionConstants.HOST;
+        port = PORT;
+        host = HOST;
 
         client = new Client();
         client.setHost(host);
         client.setPort(port);
         client.setJsonMapper(objectMapper);
-    }
-
-    private void setStartingPath() {
-        startingPagePath = Util.SIGN_IN_PAGE_PATH;
-    }
-
-    private void initParser() {
-        parser = new Parser(objectMapper);
     }
 }
