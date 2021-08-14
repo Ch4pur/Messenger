@@ -2,7 +2,6 @@ package com.ua.nure.client.controller;
 
 import com.ua.nure.client.util.Util;
 import com.ua.nure.data.ServerPackage;
-import com.ua.nure.util.ServerCommandNames;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,9 +10,14 @@ import javafx.scene.control.TextField;
 
 import java.io.IOException;
 
+import static com.ua.nure.client.util.Util.LOGIN_ERROR_MESSAGE;
+import static com.ua.nure.client.util.Util.LOGIN_REGEX;
+import static com.ua.nure.client.util.Util.PASSWORD_ERROR_MESSAGE;
+import static com.ua.nure.client.util.Util.PASSWORD_REGEX;
 import static com.ua.nure.util.Namings.LOGIN;
 import static com.ua.nure.util.Namings.PASSWORD;
 import static com.ua.nure.util.Namings.USERNAME;
+import static com.ua.nure.util.ServerCommandNames.SIGN_UP;
 
 
 public class SignUpController extends Controller {
@@ -41,7 +45,7 @@ public class SignUpController extends Controller {
         }
         ServerPackage serverPackage = new ServerPackage();
 
-        serverPackage.setCommandName(ServerCommandNames.SIGN_UP);
+        serverPackage.setCommandName(SIGN_UP);
         serverPackage.addAttribute(LOGIN, loginField.getText());
         serverPackage.addAttribute(PASSWORD, passwordField.getText());
         serverPackage.addAttribute(USERNAME, usernameField.getText());
@@ -58,8 +62,8 @@ public class SignUpController extends Controller {
     public void initialize() {
         super.initialize();
         Platform.runLater(() -> {
-            addValidation(loginField, Util.LOGIN_REGEX, Util.LOGIN_ERROR_MESSAGE);
-            addValidation(passwordField, Util.PASSWORD_REGEX, Util.PASSWORD_ERROR_MESSAGE);
+            addValidation(loginField, LOGIN_REGEX, LOGIN_ERROR_MESSAGE);
+            addValidation(passwordField, PASSWORD_REGEX, PASSWORD_ERROR_MESSAGE);
         });
     }
 }

@@ -7,8 +7,6 @@ import com.ua.nure.client.config.ApplicationContext;
 import com.ua.nure.client.node.MessageBox;
 import com.ua.nure.client.parser.Parser;
 import com.ua.nure.client.node.RoomBox;
-import com.ua.nure.client.util.BeanNames;
-import com.ua.nure.client.util.StyleClasses;
 import com.ua.nure.data.ClientPackage;
 import com.ua.nure.data.ServerPackage;
 import com.ua.nure.server.model.entity.Message;
@@ -27,6 +25,10 @@ import javafx.scene.layout.VBox;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.ua.nure.client.util.BeanNames.CLIENT;
+import static com.ua.nure.client.util.BeanNames.PARSER;
+import static com.ua.nure.client.util.StyleClasses.OTHER;
+import static com.ua.nure.client.util.StyleClasses.YOUR;
 import static com.ua.nure.util.ClientCommandNames.ADD_MESSAGE;
 import static com.ua.nure.util.ClientCommandNames.ADD_ROOM;
 import static com.ua.nure.util.ClientCommandNames.GET_ALL_ROOMS;
@@ -39,6 +41,7 @@ import static com.ua.nure.util.Namings.NEW_ROOM;
 import static com.ua.nure.util.Namings.OTHER_USER_LOGIN;
 import static com.ua.nure.util.Namings.ROOMS;
 import static com.ua.nure.util.Namings.ROOM_ID;
+import static com.ua.nure.util.ServerCommandNames.GET_ROOMS;
 
 public class MainPageController extends Controller {
 
@@ -109,15 +112,16 @@ public class MainPageController extends Controller {
 
 
     @CommandFromServer(GET_MESSAGES)
+    @SuppressWarnings("unused")
     private void updateMessages(ClientPackage clientPackage) {
         long id = (int) clientPackage.getAttribute(ROOM_ID);
         if (id != currentRoom.getRoom().getId()) {
             return;
         }
         ApplicationContext context = ClientMain.getContext();
-        Parser parser = (Parser) context.getBean(BeanNames.PARSER);
+        Parser parser = (Parser) context.getBean(PARSER);
         List<Message> messages = parser.parseList((List<?>) clientPackage.getAttribute(MESSAGES), Message.class);
-        Client client = (Client) context.getBean(BeanNames.CLIENT);
+        Client client = (Client) context.getBean(CLIENT);
         User user = parser.parse(client.getSession().get(MAIN_USER), User.class);
 
         Platform.runLater(() -> {
@@ -128,15 +132,16 @@ public class MainPageController extends Controller {
     }
 
     @CommandFromServer(ADD_MESSAGE)
+    @SuppressWarnings("unused")
     private void addMessage(ClientPackage clientPackage) {
-        long id = (int) clientPackage.getAttribute(ROOM_ID);
+        int id = (int) clientPackage.getAttribute(ROOM_ID);
         if (currentRoom != null && id != currentRoom.getRoom().getId()) {
             return;
         }
         ApplicationContext context = ClientMain.getContext();
-        Parser parser = (Parser) context.getBean(BeanNames.PARSER);
+        Parser parser = (Parser) context.getBean(PARSER);
         Message message = parser.parse(clientPackage.getAttribute(NEW_MESSAGE), Message.class);
-        Client client = (Client) context.getBean(BeanNames.CLIENT);
+        Client client = (Client) context.getBean(CLIENT);
 
         User user = parser.parse(client.getSession().get(MAIN_USER), User.class);
 
@@ -144,9 +149,10 @@ public class MainPageController extends Controller {
     }
 
     @CommandFromServer(GET_ALL_ROOMS)
+    @SuppressWarnings("unused")
     private void updateRooms(ClientPackage clientPackage) {
         ApplicationContext context = ClientMain.getContext();
-        Parser parser = (Parser) context.getBean(BeanNames.PARSER);
+        Parser parser = (Parser) context.getBean(PARSER);
 
         List<Room> rooms = parser.parseList((List<?>) clientPackage.getAttribute(ROOMS), Room.class);
         Platform.runLater(() -> {
@@ -158,9 +164,10 @@ public class MainPageController extends Controller {
     }
 
     @CommandFromServer(ADD_ROOM)
+    @SuppressWarnings("unused")
     private void addRoom(ClientPackage clientPackage) {
         ApplicationContext context = ClientMain.getContext();
-        Parser parser = (Parser) context.getBean(BeanNames.PARSER);
+        Parser parser = (Parser) context.getBean(PARSER);
         Room room = parser.parse(clientPackage.getAttribute(NEW_ROOM), Room.class);
 
         Platform.runLater(() -> createRoom(room));
@@ -172,7 +179,7 @@ public class MainPageController extends Controller {
         roomBoxes = new ArrayList<>();
         Platform.runLater(() -> {
             ServerPackage serverPackage = new ServerPackage();
-            serverPackage.setCommandName(ServerCommandNames.GET_ROOMS);
+            serverPackage.setCommandName(GET_ROOMS);
             sendAnswerToClient(serverPackage);
         });
     }
@@ -188,9 +195,9 @@ public class MainPageController extends Controller {
         MessageBox chatBox = new MessageBox(message);
         if (sender.equals(message.getMember().getUser())) {
             chatBox.setPadding(new Insets(0, 0, 0, messagesBox.getWidth() - 350));
-            chatBox.getStyleClass().add(StyleClasses.YOUR);
+            chatBox.getStyleClass().add(YOUR);
         } else {
-            chatBox.getStyleClass().add(StyleClasses.OTHER);
+            chatBox.getStyleClass().add(OTHER);
         }
 
         messagesBox.getChildren().add(chatBox);
