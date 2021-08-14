@@ -34,6 +34,9 @@ public class CreateDialogRoomCommand implements Command {
 
         try {
             User otherUser = userService.getUserByLogin(otherUserLogin);
+            if (otherUser == null) {
+                throw new CommandException("No user with such login");
+            }
             Room newRoom = roomService.createDialog(mainUser.getLogin(), otherUser.getLogin());
             ClientPackage clientPackage = new ClientPackage();
 

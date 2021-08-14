@@ -11,7 +11,10 @@ public final class StyleClasses {
 
     public static final String TITLE = "title";
 
-    public static final String SENDER = "--sender";
-    public static final String CONTENT = "--content";
-    public static final String SENT_DATE = "--date";
+    public static final String SENDER = "sender";
+    public static final String CONTENT = "content";
+    public static final String SENT_DATE = "sentDate";
+
+    public static final String HEADER = "header";
+    public static final String INNER = "inner";
 }

@@ -5,6 +5,7 @@ import com.ua.nure.server.model.entity.Room;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.css.PseudoClass;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 
@@ -20,7 +21,6 @@ public class RoomBox extends AnchorPane {
     public RoomBox(Room room) {
         this.room = room;
         isActiveProperty = new SimpleBooleanProperty(false);
-
         isActiveProperty.set(false);
         createRoomPanes();
     }
@@ -31,11 +31,10 @@ public class RoomBox extends AnchorPane {
 
     private void createRoomPanes() {
         Label roomTitle = new Label(room.getTitle());
-        roomTitle.getStyleClass().add("title");
+        roomTitle.setPadding(new Insets(0,0,0,20));
+        roomTitle.getStyleClass().add(StyleClasses.TITLE);
         getStyleClass().add(StyleClasses.ROOM);
-
         getChildren().add(roomTitle);
-
         isActiveProperty.addListener(e -> pseudoClassStateChanged(SELECTED_PSEUDO_CLASS, isActiveProperty.get()));
     }
 

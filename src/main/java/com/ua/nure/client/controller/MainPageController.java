@@ -123,7 +123,7 @@ public class MainPageController extends Controller {
     @CommandFromServer(ADD_MESSAGE)
     private void addMessage(ClientPackage clientPackage) {
         long id = (int) clientPackage.getAttribute(ROOM_ID);
-        if (id != currentRoom.getRoom().getId()) {
+        if (currentRoom != null && id != currentRoom.getRoom().getId()) {
             return;
         }
         ApplicationContext context = ClientMain.getContext();
@@ -172,11 +172,8 @@ public class MainPageController extends Controller {
 
     private void createRoom(Room room) {
         RoomBox roomBox = new RoomBox(room);
-        roomBox.setPrefSize(ROOM_PREF_WIDTH, ROOM_PREF_HEIGHT);
         roomBox.addEventHandler(MouseEvent.MOUSE_CLICKED, this::selectRoom);
-
         roomsBox.getChildren().add(roomBox);
-
         roomBoxes.add(roomBox);
     }
 

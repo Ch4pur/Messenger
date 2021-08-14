@@ -85,6 +85,8 @@ public class MessengerServer {
                     }
                 } catch (InterruptedException e) {
                     close();
+                } catch (Exception e) {
+                    System.err.println(e.getMessage());
                 }
             }
         }
@@ -113,6 +115,9 @@ public class MessengerServer {
                     }
                 } catch (IOException | InterruptedException e) {
                     close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.err.println(e.getMessage());
                 }
             }
 
